@@ -22,15 +22,6 @@ class Rank:
         authorroles = ctx.message.author.roles
         messagechannel = ctx.message.channel
         serverrolenames = list([lambda x : x.name in serverroles])
-        for r in skillRankRoles:
-            if r not in serverrolenames:
-                try:
-                    await self.bot.create_role(server, name=r)
-                    await self.bot.say("{} role not detected, adding it to the server...".format(r))
-                except Forbidden:
-                    await self.bot.say("I need the 'Manage Roles' permission to properly set up roles!")
-            
-
         
         try:
             sr = int(sr)
@@ -72,19 +63,15 @@ class Rank:
         await self.bot.send_message(messagechannel, msgString)
         pass 
     
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     async def reg(self, ctx, region):
         """Sets your role to the [region] specified. (NA, EU, SEA)"""
         regions = ['NA', 'EU', 'SEA']
-        try:
-            serverRoles = ctx.message.server.roles
-            authorRoles = ctx.message.author.roles
-            author = ctx.message.author
-            server = ctx.message.server
-            message = ctx.message
-        except AttributeError:
-            await self.bot.say("That command is not available in DMs")
-            return
+        serverRoles = ctx.message.server.roles
+        authorRoles = ctx.message.author.roles
+        author = ctx.message.author
+        server = ctx.message.server
+        serverrolenames = list([lambda x : x.name in serverRoles])
         roleindex = -1
         earth_emoji = ''
 
@@ -110,19 +97,14 @@ class Rank:
 
         await self.bot.send_message(message.channel, ':white_check_mark: ' + author.name + ', your region is now: ' + region.upper() + ' ' + earth_emoji)
         pass
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     async def gr(self, ctx, gamerole):
         """Sets your priority [gamerole] (DPS, Flex, Tank, Support)"""
         gameroles = ['DPS', 'Flex', 'Tank', 'Support']
-        try:
-            message = ctx.message
-            server = message.server
-            author = message.author
-            serverroles = server.roles
-            authorroles = author.roles
-        except AttributeError:
-            await self.bot.say("That command is not available in DMs")
-            return
+        server = message.server
+        author = message.author
+        serverroles = server.roles
+        authorroles = author.roles
         roleindex = -1
 
         if gamerole.lower() == 'dps':
@@ -148,6 +130,7 @@ class Rank:
         await self.bot.replace_roles(author, *authorroles)
         await self.bot.send_message(message.channel, ':white_check_mark: ' + author.name + ', your game role is now: ' + gamerole.upper())
         pass
+    
     @commands.command(pass_context=True)
     async def ob(self, ctx, battletag):
         """Brings up stats from Overbuff with the given [BattleTag#0000]"""
