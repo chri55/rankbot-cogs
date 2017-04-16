@@ -23,7 +23,7 @@ class Rank:
         messagechannel = ctx.message.channel
         serverrolenames = list([lambda x : x.name in serverroles])
         for r in skillRankRoles:
-            if r not in serverRoleNames:
+            if r not in serverrolenames:
                 try:
                     await self.bot.create_role(server, name=r)
                     await self.bot.say("{} role not detected, adding it to the server...".format(r))
