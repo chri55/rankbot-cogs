@@ -1,0 +1,10 @@
+{
+	"AUTHOR" : "chri55 (Clarf#4556)",
+	"INSTALL_MSG" : "Make sure you have all hero roles added to your serve to ensure this works! Soldier: 76 has been changed to Soldier for simplicity, so make sure that role is called 'Soldier'",
+	"NAME" : "Hero",
+	"SHORT" : "Management for hero specific server roles.",
+	"DESCRIPTION" : "Management for hero specific server roles.",
+	"TAGS" : [],
+	"REQUIREMENTS" : ["os", "asyncio", "collections"],
+	"HIDDEN" : false
+}

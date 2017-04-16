@@ -1,0 +1,10 @@
+{
+	"AUTHOR" : "chri55 (Clarf#4556)",
+	"INSTALL_MSG" : "This occasionally gets posts from overstalk.io",
+	"NAME" : "Overstalk",
+	"SHORT" : "This occasionally gets posts from overstalk.io",
+	"DESCRIPTION" : "This occasionally gets posts from overstalk.io",
+	"TAGS" : [],
+	"REQUIREMENTS" : ["os", "asyncio", "collections", "bs4", "aiohttp"],
+	"HIDDEN" : false
+}

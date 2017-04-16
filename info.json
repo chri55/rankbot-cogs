@@ -1,0 +1,7 @@
+{
+	"AUTHOR" : "chri55 (Clarf#4556)",
+	"INSTALL_MSG : "Thanks for adding these cogs. Hopefully they help with server moderation and roles! For help join the RankBot support server: discord.gg/5JbuhSy",
+	"NAME" : "RankBot Cogs",
+	"SHORT" : "Some OW Discord role related cogs.",
+	"DESCRIPTION" : "Some OW Discord related cogs. Most are ones I made to help manage server roles better and not have to remember everyones rank, region, heroes, etc."
+}

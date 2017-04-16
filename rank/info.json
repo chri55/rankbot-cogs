@@ -1,0 +1,10 @@
+{
+	"AUTHOR" : "chri55 (Clarf#4556)",
+	"INSTALL_MSG" : "Make sure all rank, region, and gamerole roles are added to ensure this works! For help join RankBot's support server: discord.gg/5JbuhSy ",
+	"NAME" : "Rank",
+	"SHORT" : "Rank, gamerole, and region management commands.",
+	"DESCRIPTION" : "Rank, gamerole, and region management commands, along with stats from overbuff.com",
+	"TAGS" : [],
+	"REQUIREMENTS" : ["asyncio", "bs4", "aiohttp"],
+	"HIDDEN" : false
+}
