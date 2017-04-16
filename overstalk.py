@@ -19,16 +19,16 @@ class Overstalk:
         self.bot = bot
         self.most_recent = dataIO.load_json("data/overstalk/recent.json")
 
-    @commands.command()
-    async def recent(self):
+    @commands.command(pass_context=True)
+    async def recent(self, ctx):
         """Grabs the most recent post from overstalk.io within the hour."""
+        channel_obj = ctx.message.channel
         title = self.most_recent["TITLE"]
         content = self.most_recent["CONTENT"]
         stamps = self.most_recent["TIME"]
-        post = discord.Embed()
-        post.add_field(name=title, value=content)
-        post.set_footer(text=stamps)
-        await self.bot.say(embed=post)
+        forum_link = self.most_recent["LINK"]
+        post = post_format(title, content, stamps, forum_link)
+        await self.bot.send_message(channel_obj, embed=post)
         
     @commands.command(pass_context=True)
     async def stalkset(self, ctx):
@@ -44,15 +44,23 @@ class Overstalk:
                                "channel everytime there is a new post.")
         dataIO.save_json("data/overstalk/recent.json", self.most_recent)
         
+    @commands.command(pass_context=True, hidden=True)
+    @checks.is_owner()
+    async def stalkupdate(self, ctx):
+        await self.site_checker()
+        dataIO.save_json("data/overstalk/recent.json", self.most_recent)
+        await self.bot.say("Recent post from overstalk.io has been updated")
+        
     async def site_checker(self):
-        CHECK_DELAY = 60*60 # Every hour
+        CHECK_DELAY = 60*5 # Every hour
         url = "http://www.overstalk.io/?sources=BLIZZARD_FORUM"
         async with aiohttp.get(url) as response:
             soup_obj = BeautifulSoup(await response.text(), "html.parser")
         title = soup_obj.find_all(class_="os-post-header col-md-8")[0].get_text()
         content = soup_obj.find_all(class_="os-post-content card-block")[0].get_text()
         stamps = soup_obj.find_all(class_="os-post-meta col-md-4 text-right")[0].get_text()
-        
+        forum_link = ""
+        post = post_format(title, content, stamps, forum_link)
         if title == self.most_recent["TITLE"] and content == self.most_recent["CONTENT"]:
             # I think it's safe to assume the same 
             # post content AND title would happen
@@ -62,19 +70,23 @@ class Overstalk:
             self.most_recent["TITLE"] = title
             self.most_recent["CONTENT"] = content
             self.most_recent["TIME"] = stamps
-            post = discord.Embed()
-            post.add_field(name=title, value=content)
-            post.set_footer(text=stamps)
+            self.most_recent["LINK"] = forum_link
             for channel in self.most_recent["CHANNELS"]:
                 channel_obj = self.bot.get_channel(channel)
                 if channel_obj is None:
                     continue
-                mention = self.settings.get(channel_obj.server.id, {}).get("MENTION", "")
                 can_speak = channel_obj.permissions_for(channel_obj.server.me).send_messages
                 if channel_obj and can_speak:
-                    await self.bot.send_message(channel_obj, mention, embed=post)
+                    await self.bot.send_message(channel_obj, embed=post)
             dataIO.save_json("data/overstalk/recent.json", self.most_recent)
             await asyncio.sleep(CHECK_DELAY)
+            
+def post_format(title, content, stamps, forum_link):
+    post = discord.Embed()
+    post.add_field(name=title, value=content)
+    #post.add_field(name="Original source:", value=forum_link)
+    post.set_footer(text=stamps)
+    return post
             
 def check_folders():
     if not os.path.exists("data/overstalk"):
