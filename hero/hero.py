@@ -13,16 +13,13 @@ class Hero:
     
     Allows members to add their own hero roles so people can see what characters the play."""
     def __init__(self, bot):
-        ###########################
-        # Make settings include   #
-        # a server_disabled value #
-        ###########################
+
         self.bot = bot
         self.server_list = dataIO.load_json("data/hero/servers.json")
         settings = dataIO.load_json("data/hero/settings.json")
-        self.hero_list = ["genji", "mccree", "pharah", "reaper", "soldier", "sombra",
-                     "bastion", "hanzo", "junkrat", "mei", "torbjorn",
-                     "d.va", "orisa", "reinhardt", "roadhog", "winston",
+        self.hero_list = ["genji", "mccree", "pharah", "reaper", "soldier", "sombra", "tracer",
+                     "bastion", "hanzo", "junkrat", "mei", "torbjorn", "widowmaker",
+                     "d.va", "orisa", "reinhardt", "roadhog", "winston", "zarya",
                      "ana", "lucio", "mercy", "symmetra", "zenyatta"]
         self.settings = defaultdict(dict, settings)
         
