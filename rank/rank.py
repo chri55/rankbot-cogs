@@ -12,19 +12,26 @@ class Rank:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, no_pm=True)
     async def sr(self, ctx, sr):
         """Assigns SR based on the integer [sr] given. (1-5000). 0 no longer removes rank (edited 4/11/17)"""
         skillRankRoles = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Master', 'Grandmaster']
 
-        try:
-            serverroles = ctx.message.server.roles
-            authorroles = ctx.message.author.roles
-            messagechannel = ctx.message.channel
-        except AttributeError:
-            await self.bot.say("That command is not available in DMs")
-            return
+        server = ctx.message.server
+        serverroles = ctx.message.server.roles
+        authorroles = ctx.message.author.roles
+        messagechannel = ctx.message.channel
+        serverrolenames = list([lambda x : x.name in serverroles])
+        for r in skillRankRoles:
+            if r not in serverRoleNames:
+                try:
+                    await self.bot.create_role(server, name=r)
+                    await self.bot.say("{} role not detected, adding it to the server...".format(r))
+                except Forbidden:
+                    await self.bot.say("I need the 'Manage Roles' permission to properly set up roles!")
+            
 
+        
         try:
             sr = int(sr)
         except ValueError:
@@ -151,37 +158,6 @@ class Rank:
 
         await self.bot.send_message(ctx.message.channel, msgString)
         pass
-    #@commands.command(pass_context=True)
-    #async def lfg(self, ctx, *extra_roles):
-    #    """Pings the group that your SR role is in.  You can add extra arguments as other SR roles as well.\nEX. !lfg gold plat"""
-    #    skillRankRoles = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Master', 'Grandmaster']
-
-        #for chan in ctx.message.server.channels:
-        #    if chan.name == "looking_for_game":
-        #        pingchannel = chan
-        #for arole in ctx.message.author.roles:
-        #    if arole.name in skillRankRoles:
-        #        role_to_ping = arole
-
-        #if len(extra_roles) <= 0:
-        #    try:
-        #        msgString = role_to_ping.mention + ', ' + ctx.message.author.name + " would like to group up!"
-        #        await self.bot.send_message(pingchannel, msgString)
-        #    except:
-        #        await self.bot.send_message(pingchannel, ':fire: ' + ctx.message.author.name + ", please update your rank using the **r!sr** command. Type **r!help** for a list of commands.")
-        #elif len(extra_roles) >= 1:
-        #    msgString = role_to_ping.mention + ', '
-        #    for role in extra_roles:
-        #        if role == 'plat':
-        #            role = 'platinum'
-        #        if role.capitalize() in skillRankRoles:
-        #            for rankRole in ctx.message.server.roles:
-        #                if rankRole.name == role.capitalize() and role.capitalize() != role_to_ping.name:
-        #                    msgString += rankRole.mention + ', '
-
-        #    msgString += ctx.message.author.name + ' would like to group up!'
-        #    await self.bot.send_message(pingchannel, msgString)
-        #pass
     
     @commands.command(pass_context=True)
     async def stats(self, ctx, battletag, comp="normal"):
@@ -231,13 +207,6 @@ class Rank:
         await self.bot.say(embed=embed)
         pass
     
-   # @commands.command(pass_context=True)
-   # async def getstats(self, ctx, battletag, hero):
-   #     """Attempts to bring up stats of the battletag for the hero given"""
-   #     url = "https://www.overbuff.com/players/pc/" + battletag.rstrip().replace('#', '-') + "/heroes/" + hero.lower()
-   #     page = requests.get(url)
-   #     content = BeautifulSoup(await page.text(), 'html.parser')
-   #     values = content.findall('div', class_='value')  
     def author_role(role):
         if role.name.capitalize() in skillRankRoles:
             return role
