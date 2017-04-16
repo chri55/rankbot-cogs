@@ -85,7 +85,7 @@ class Rank:
             earth_emoji = ':earth_asia:'
             roleindex = 2
         else:
-            await self.bot.send_message(message.channel, ':fire: ' + author.name + ', please set a valid region. (NA, EU, or SEA)')
+            await self.bot.say(':fire: ' + author.name + ', please set a valid region. (NA, EU, or SEA)')
             return
 
         for sRole in serverRoles:
@@ -95,12 +95,13 @@ class Rank:
 
         await self.bot.replace_roles(author, *authorRoles)
 
-        await self.bot.send_message(message.channel, ':white_check_mark: ' + author.name + ', your region is now: ' + region.upper() + ' ' + earth_emoji)
+        await self.bot.say(':white_check_mark: ' + author.name + ', your region is now: ' + region.upper() + ' ' + earth_emoji)
         pass
     @commands.command(pass_context=True, no_pm=True)
     async def gr(self, ctx, gamerole):
         """Sets your priority [gamerole] (DPS, Flex, Tank, Support)"""
         gameroles = ['DPS', 'Flex', 'Tank', 'Support']
+        message = ctx.message
         server = message.server
         author = message.author
         serverroles = server.roles
