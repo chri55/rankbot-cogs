@@ -53,8 +53,7 @@ class Overstalk:
         
     async def site_checker(self):
         CHECK_DELAY = 60*5 # Every 5 mins
-        #THROW A WHILE LOOP HERE DUMBASS!!!!!!!!!
-        #LOOK AT STREAMS.PY!!!!!!!!!!!!!!!!!!!!!!
+
         url = "http://www.overstalk.io/?sources=BLIZZARD_FORUM"
         while self == self.bot.get_cog("Overstalk"):
             async with aiohttp.get(url) as response:
@@ -69,7 +68,6 @@ class Overstalk:
                 # post content AND title would happen
                 # twice in a row
                 print("No new posts. Sleeping...")
-                await asyncio.sleep(CHECK_DELAY)
             else:
                 self.most_recent["TITLE"] = title
                 self.most_recent["CONTENT"] = content
@@ -84,7 +82,7 @@ class Overstalk:
                         await self.bot.send_message(channel_obj, embed=post)
                 dataIO.save_json("data/overstalk/recent.json", self.most_recent)
                 print("Got new post.  Sleeping...")
-                await asyncio.sleep(CHECK_DELAY)
+            await asyncio.sleep(CHECK_DELAY)
             
 def post_format(title, content, stamps, forum_link):
     post = discord.Embed()
