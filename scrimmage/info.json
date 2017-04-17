@@ -1,0 +1,10 @@
+{
+	"AUTHOR" : "chri55 (Clarf#4556)",
+	"INSTALL_MSG" : "Thanks for installing this to help better manage scrim roles!",
+	"NAME" : "Scrimmage",
+	"SHORT" : "Scrimmage role management commands",
+	"DESCRIPTION" : "Scrimmage role management commands",
+	"TAGS" : [],
+	"REQUIREMENTS" : ["os"],
+	"HIDDEN" : false
+}

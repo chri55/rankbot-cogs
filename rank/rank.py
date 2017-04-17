@@ -21,7 +21,16 @@ class Rank:
         serverroles = ctx.message.server.roles
         authorroles = ctx.message.author.roles
         messagechannel = ctx.message.channel
-        serverrolenames = list([lambda x : x.name in serverroles])
+        serverrolenames = [x.name for x in serverroles]
+        for r in skillRankRoles:
+            if r not in serverrolenames:
+                try:
+                    await self.bot.say("{} role not detected, creating it in the server...".format(r))
+                    await self.bot.create_role(server, name=r)
+                except Forbidden:
+                    await self.bot.say("I need to have the 'Manage Roles' permission to automatically add the right roles!")
+                    return
+        
         
         try:
             sr = int(sr)
@@ -71,7 +80,15 @@ class Rank:
         authorRoles = ctx.message.author.roles
         author = ctx.message.author
         server = ctx.message.server
-        serverrolenames = list([lambda x : x.name in serverRoles])
+        serverrolenames = [x.name for x in serverRoles]
+        for r in regions:
+            if r not in serverrolenames:
+                try:
+                    await self.bot.say("{} role not detected, creating it in the server...".format(r))
+                    await self.bot.create_role(server, name=r)
+                except Forbidden:
+                    await self.bot.say("I need to have the 'Manage Roles' permission to automatically add the right roles!")
+                    return
         roleindex = -1
         earth_emoji = ''
 
@@ -106,6 +123,14 @@ class Rank:
         author = message.author
         serverroles = server.roles
         authorroles = author.roles
+        serverrolenames = [x.name for x in serverroles]
+        for r in gameroles:
+            if r not in serverrolenames:
+                try:
+                    await self.bot.say("{} role not detected, creating it in the server...".format(r))
+                    await self.bot.create_role(server, name=r)
+                except Forbidden:
+                    await self.bot.say("I need to have the 'Manage Roles' permission to automatically add the right roles!")
         roleindex = -1
 
         if gamerole.lower() == 'dps':
