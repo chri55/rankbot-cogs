@@ -68,6 +68,7 @@ class Overstalk:
                 # I think it's safe to assume the same 
                 # post content AND title would happen
                 # twice in a row
+                print("No new posts. Sleeping...")
                 await asyncio.sleep(CHECK_DELAY)
             else:
                 self.most_recent["TITLE"] = title
@@ -82,6 +83,7 @@ class Overstalk:
                     if channel_obj and can_speak:
                         await self.bot.send_message(channel_obj, embed=post)
                 dataIO.save_json("data/overstalk/recent.json", self.most_recent)
+                print("Got new post.  Sleeping...")
                 await asyncio.sleep(CHECK_DELAY)
             
 def post_format(title, content, stamps, forum_link):
