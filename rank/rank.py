@@ -236,7 +236,7 @@ class Rank:
                                " This will automatically create all the necessary roles when using each command"
                                " for the first time only. If this is ok type 'yes'")
             response = await self.bot.wait_for_message(timeout=TIMEOUT, author=ctx.message.author, content="yes")
-            if response is not None and repsonse.content=="I agree":
+            if response is not None and response.content=="I agree":
                 self.servers.append(server.id)
                 await self.bot.say("Rank commands have been enabled.")
             else:
