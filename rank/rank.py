@@ -19,10 +19,13 @@ class Rank:
 
     @commands.command(pass_context=True, no_pm=True)
     async def sr(self, ctx, sr):
-        """Assigns SR based on the integer [sr] given. (1-5000). 0 no longer removes rank (edited 4/11/17)"""
+        """Assigns SR based on the integer <sr> given. (1-5000). 0 no longer removes rank (edited 4/11/17)"""
         skillRankRoles = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Master', 'Grandmaster']
 
         server = ctx.message.server
+        if server.id not in self.servers:
+            await self.bot.say("This function is not enabled. Please use `rankset` as an admin to enable it.")
+            return
         serverroles = ctx.message.server.roles
         authorroles = ctx.message.author.roles
         messagechannel = ctx.message.channel
@@ -85,6 +88,9 @@ class Rank:
         authorRoles = ctx.message.author.roles
         author = ctx.message.author
         server = ctx.message.server
+        if server.id not in self.servers:
+            await self.bot.say("This function is not enabled. Please use `rankset` as an admin to enable it.")
+            return
         serverrolenames = [x.name for x in serverRoles]
         for r in regions:
             if r not in serverrolenames:
@@ -125,6 +131,9 @@ class Rank:
         gameroles = ['DPS', 'Flex', 'Tank', 'Support']
         message = ctx.message
         server = message.server
+        if server.id not in self.servers:
+            await self.bot.say("This function is not enabled. Please use `rankset` as an admin to enable it.")
+            return
         author = message.author
         serverroles = server.roles
         authorroles = author.roles
@@ -236,12 +245,12 @@ class Rank:
                                " This will automatically create all the necessary roles when using each command"
                                " for the first time only. If this is ok type 'yes'")
             response = await self.bot.wait_for_message(timeout=TIMEOUT, author=ctx.message.author, content="yes")
-            if response is not None and response.content=="I agree":
+            if response is not None and response.content=="yes":
                 self.servers.append(server.id)
                 await self.bot.say("Rank commands have been enabled.")
             else:
-                await self.bot.say("{} seconds have passed. This will not be enabled for now.".format(TIMEOUT))
-        dataIO.save_json("data/rank/servers.py", self.servers)
+                await self.bot.say("This will not be enabled for now.")
+        dataIO.save_json("data/rank/servers.json", self.servers)
     
     def author_role(role):
         if role.name.capitalize() in skillRankRoles:
