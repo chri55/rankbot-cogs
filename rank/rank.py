@@ -1,8 +1,12 @@
 import discord
 from discord.ext import commands
+from .utils.dataIO import dataIO
+from .utils.chat_formatting import escape_mass_mentions
+from .utils import checks
 from bs4 import BeautifulSoup
 import requests
 import aiohttp
+import os
 
 class Rank:
     """Server commands for users to assign themselves skill rank roles, region, and game role.
@@ -11,6 +15,7 @@ class Rank:
     skillRankRoles = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Master', 'Grandmaster']
     def __init__(self, bot):
         self.bot = bot
+        self.servers = dataIO.load_json("data/rank/servers.json")
 
     @commands.command(pass_context=True, no_pm=True)
     async def sr(self, ctx, sr):
@@ -216,9 +221,43 @@ class Rank:
         await self.bot.say(embed=embed)
         pass
     
+    @commands.command(pass_context=True, no_pm=True)
+    @checks.mod_or_permissions(manage_server=True)
+    async def rankset(self, ctx):
+        """Turns on and off the rank, role, and region commands in the server"""
+        TIMEOUT=10
+        server = ctx.message.server
+        if server.id in self.servers:
+            self.servers.remove(server.id)
+            await self.bot.say("Rank commands are turned off in the server. Don't forget to delete the roles unless"
+                               " you plan on turning this on again.")
+        else:
+            await self.bot.say("Do you want to enable Rank commands in the server?"
+                               " This will automatically create all the necessary roles when using each command"
+                               " for the first time only. If this is ok type 'yes'")
+            response = self.bot.wait_for_message(timeout=TIMEOUT, author=ctx.message.author, content="yes")
+            if response is not None and repsonse.content=="I agree":
+                self.servers.append(server.id)
+                await self.bot.say("Rank commands have been enabled.")
+            else:
+                await self.bot.say("{} seconds have passed. This will not be enabled for now.".format(TIMEOUT))
+        dataIO.save_json("data/rank/servers.py", self.servers)
+    
     def author_role(role):
         if role.name.capitalize() in skillRankRoles:
             return role
+        
+def check_folders():
+    if not os.path.exists("data/rank"):
+        print("Creating rank folder...")
+        os.makedirs("data/rank")
+
+def check_files():
+    f = "data/rank/servers.json"
+    if not dataIO.is_valid_json(f):
+        dataIO.save_json(f, [])
 
 def setup(bot):
+    check_folders()
+    check_files()
     bot.add_cog(Rank(bot))
