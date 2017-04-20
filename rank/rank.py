@@ -225,7 +225,7 @@ class Rank:
     async def invite(self):
         """Provides links to add RankBot to your own server."""
         embed = discord.Embed()
-        embed.add_field(name='Invite me here:', value='https://discordapp.com/oauth2/authorize?client_id=268542937573359617&scope=bot&permissions=536063039')
+        embed.add_field(name='Invite me here:', value='https://discordapp.com/oauth2/authorize?client_id=268542937573359617&scope=bot&permissions=335019127')
         embed.add_field(name='My Support Server:', value='https://discord.gg/5JbuhSy')
         await self.bot.say(embed=embed)
         pass
