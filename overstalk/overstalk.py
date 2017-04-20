@@ -30,11 +30,9 @@ class Overstalk:
         try:
             post = discord.Embed()
             post.add_field(name="New Post From overstalk.io:", value=forum_link)
-            post.set_footer(text="The post was too long to send on Discord.")
             await self.bot.send_message(channel_obj, embed=post)
-        else:    
-            post = embed_format(title, content, stamps)
-            await self.bot.send_message(channel_obj, embed=post)
+        except:    
+            await self.bot.say("New post from overstalk.io: <{}>".format(forum_link))
         pass
         
     @commands.command(pass_context=True)
@@ -89,7 +87,12 @@ class Overstalk:
                         continue
                     can_speak = channel_obj.permissions_for(channel_obj.server.me).send_messages
                     if channel_obj and can_speak:
-                        await self.bot.say(title + "\n\n" + forum_link)
+                        try:
+                            post = discord.Embed()
+                            post.add_field(name="New Post From overstalk.io:", value=forum_link)
+                            await self.bot.send_message(channel_obj, embed=post)
+                        except:    
+                            await self.bot.say("New post from overstalk.io: <{}>".format(forum_link)
                         #if len(title) + len(content) + len(stamps) > 2000:
                         #    post = discord.Embed()
                         #    post.add_field(name="New Post From overstalk.io:", value=forum_link)
