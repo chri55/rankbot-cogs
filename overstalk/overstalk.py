@@ -57,17 +57,17 @@ class Overstalk:
         await self.bot.say("Recent post from overstalk.io has been updated")
         
     async def site_checker(self):
-        CHECK_DELAY = 60*5 # Every 5 mins
+        CHECK_DELAY = 60 
 
         url = "http://www.overstalk.io/?sources=BLIZZARD_FORUM"
         while self == self.bot.get_cog("Overstalk"):
             async with aiohttp.get(url) as response:
                 soup_obj = BeautifulSoup(await response.text(), "html.parser")
-            title = soup_obj.find_all(class_="os-post-header col-md-8")[0].get_text()
+            titlecode = soup_obj.find_all(class_="os-post-header col-md-8")[0]
+            title = titlecode.get_text()
             content = soup_obj.find_all(class_="os-post-content card-block")[0].get_text()
             stamps = soup_obj.find_all(class_="os-post-meta col-md-4 text-right")[0].get_text()
-            print(title)
-            print(content)
+            forum_link = titlecode.find_all("a")[0].get_text()
             await asyncio.sleep(0.5)
             if title == self.most_recent["TITLE"] and content == self.most_recent["CONTENT"]:
                 # I think it's safe to assume the same 
@@ -78,6 +78,9 @@ class Overstalk:
                 self.most_recent["TITLE"] = title
                 self.most_recent["CONTENT"] = content
                 self.most_recent["TIME"] = stamps
+                self.most_recent["LINK"] = forum_link
+                dataIO.save_json("data/overstalk/recent.json", self.most_recent)
+                await asyncio.sleep(0.5)
                 for channel in self.most_recent["CHANNELS"]:
                     channel_obj = self.bot.get_channel(channel)
                     if channel_obj is None:
@@ -85,8 +88,9 @@ class Overstalk:
                     can_speak = channel_obj.permissions_for(channel_obj.server.me).send_messages
                     if channel_obj and can_speak:
                         if len(title) + len(content) + len(stamps) > 2000:
-                            post = post_format(title, content, stamps)
-                            await self.bot.say(post)
+                            post = discord.Embed()
+                            post.add_field(name="New Post From overstalk.io:", value=forum_link)
+                            post.add_footer("The post was too long to send on Discord.")
                         else:    
                             post = embed_format(title, content, stamps)
                             await self.bot.send_message(channel_obj, embed=post)
