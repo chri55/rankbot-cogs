@@ -21,14 +21,19 @@ class Overstalk:
 
     @commands.command(pass_context=True)
     async def recent(self, ctx):
-        """Grabs the most recent post from overstalk.io within the hour."""
+        """Grabs the most recent post from overstalk.io"""
         channel_obj = ctx.message.channel
         title = self.most_recent["TITLE"]
         content = self.most_recent["CONTENT"]
         stamps = self.most_recent["TIME"]
         forum_link = self.most_recent["LINK"]
-        post = post_format(title, content, stamps, forum_link)
-        await self.bot.send_message(channel_obj, embed=post)
+        if len(title) + len(content) + len(stamps) > 2000:
+            post = post_format(title, content, stamps)
+            await self.bot.say(post)
+        else:    
+            post = embed_format(title, content, stamps)
+            await self.bot.send_message(channel_obj, embed=post)
+        pass
         
     @commands.command(pass_context=True)
     async def stalkset(self, ctx):
@@ -84,11 +89,17 @@ class Overstalk:
                 print("Got new post.  Sleeping...")
             await asyncio.sleep(CHECK_DELAY)
             
-def post_format(title, content, stamps, forum_link):
+def embed_format(title, content, stamps):
     post = discord.Embed()
     post.add_field(name=title, value=content)
-    #post.add_field(name="Original source:", value=forum_link)
     post.set_footer(text=stamps)
+    return post
+
+def post_format(title, content, stamps):
+    post = ""
+    post += "__***{}***__\n\n".format(title)
+    post += "{}\n\n".format(content)
+    post += "{}\n(This post did not send in Embed format because the content was too long. Sorry!)".format(stamps)
     return post
             
 def check_folders():
