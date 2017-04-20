@@ -29,10 +29,10 @@ class Overstalk:
         forum_link = self.most_recent["LINK"]
         try:
             post = discord.Embed()
-            post.add_field(name="New Post From overstalk.io:", value=forum_link)
+            post.add_field(name="New Post From overstalk.io:", value=title)
             await self.bot.send_message(channel_obj, embed=post)
         except:    
-            await self.bot.say("New post from overstalk.io: <{}>".format(forum_link))
+            await self.bot.say("New post from overstalk.io: {}".format(title))
         pass
         
     @commands.command(pass_context=True)
@@ -89,10 +89,10 @@ class Overstalk:
                     if channel_obj and can_speak:
                         try:
                             post = discord.Embed()
-                            post.add_field(name="New Post From overstalk.io:", value=forum_link)
+                            post.add_field(name="New Post From overstalk.io:", value=title)
                             await self.bot.send_message(channel_obj, embed=post)
                         except:    
-                            await self.bot.say("New post from overstalk.io: <{}>".format(forum_link))
+                            await self.bot.say("New post from overstalk.io: {}".format(title))
                         #if len(title) + len(content) + len(stamps) > 2000:
                         #    post = discord.Embed()
                         #    post.add_field(name="New Post From overstalk.io:", value=forum_link)
