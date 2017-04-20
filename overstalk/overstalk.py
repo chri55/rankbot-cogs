@@ -92,7 +92,7 @@ class Overstalk:
                             post.add_field(name="New Post From overstalk.io:", value=forum_link)
                             await self.bot.send_message(channel_obj, embed=post)
                         except:    
-                            await self.bot.say("New post from overstalk.io: <{}>".format(forum_link)
+                            await self.bot.say("New post from overstalk.io: <{}>".format(forum_link))
                         #if len(title) + len(content) + len(stamps) > 2000:
                         #    post = discord.Embed()
                         #    post.add_field(name="New Post From overstalk.io:", value=forum_link)
