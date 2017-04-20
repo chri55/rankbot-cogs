@@ -66,6 +66,8 @@ class Overstalk:
             title = soup_obj.find_all(class_="os-post-header col-md-8")[0].get_text()
             content = soup_obj.find_all(class_="os-post-content card-block")[0].get_text()
             stamps = soup_obj.find_all(class_="os-post-meta col-md-4 text-right")[0].get_text()
+            print(title)
+            print(content)
             await asyncio.sleep(0.5)
             if title == self.most_recent["TITLE"] and content == self.most_recent["CONTENT"]:
                 # I think it's safe to assume the same 
