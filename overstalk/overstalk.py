@@ -30,7 +30,7 @@ class Overstalk:
         if len(title) + len(content) + len(stamps) > 2000:
             post = discord.Embed()
             post.add_field(name="New Post From overstalk.io:", value=forum_link)
-            post.add_footer("The post was too long to send on Discord.")
+            post.set_footer("The post was too long to send on Discord.")
             await self.bot.send_message(channel_obj, embed=post)
         else:    
             post = embed_format(title, content, stamps)
@@ -92,7 +92,7 @@ class Overstalk:
                         if len(title) + len(content) + len(stamps) > 2000:
                             post = discord.Embed()
                             post.add_field(name="New Post From overstalk.io:", value=forum_link)
-                            post.add_footer("The post was too long to send on Discord.")
+                            post.set_footer("The post was too long to send on Discord.")
                         else:    
                             post = embed_format(title, content, stamps)
                             await self.bot.send_message(channel_obj, embed=post)
