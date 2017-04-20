@@ -21,15 +21,17 @@ class Overstalk:
 
     @commands.command(pass_context=True)
     async def recent(self, ctx):
-        """Grabs the most recent post from overstalk.io"""
+        """Grabs the most recent saved post from overstalk.io"""
         channel_obj = ctx.message.channel
         title = self.most_recent["TITLE"]
         content = self.most_recent["CONTENT"]
         stamps = self.most_recent["TIME"]
         forum_link = self.most_recent["LINK"]
         if len(title) + len(content) + len(stamps) > 2000:
-            post = post_format(title, content, stamps)
-            await self.bot.say(post)
+            post = discord.Embed()
+            post.add_field(name="New Post From overstalk.io:", value=forum_link)
+            post.add_footer("The post was too long to send on Discord.")
+            await self.bot.send_message(channel_obj, embed=post)
         else:    
             post = embed_format(title, content, stamps)
             await self.bot.send_message(channel_obj, embed=post)
