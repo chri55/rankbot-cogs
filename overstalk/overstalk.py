@@ -27,7 +27,7 @@ class Overstalk:
         content = self.most_recent["CONTENT"]
         stamps = self.most_recent["TIME"]
         forum_link = self.most_recent["LINK"]
-        if len(title) + len(content) + len(stamps) > 2000:
+        try:
             post = discord.Embed()
             post.add_field(name="New Post From overstalk.io:", value=forum_link)
             post.set_footer(text="The post was too long to send on Discord.")
@@ -89,13 +89,14 @@ class Overstalk:
                         continue
                     can_speak = channel_obj.permissions_for(channel_obj.server.me).send_messages
                     if channel_obj and can_speak:
-                        if len(title) + len(content) + len(stamps) > 2000:
-                            post = discord.Embed()
-                            post.add_field(name="New Post From overstalk.io:", value=forum_link)
-                            post.set_footer(text="The post was too long to send on Discord.")
-                        else:    
-                            post = embed_format(title, content, stamps)
-                            await self.bot.send_message(channel_obj, embed=post)
+                        await self.bot.say(title + "\n\n" + forum_link)
+                        #if len(title) + len(content) + len(stamps) > 2000:
+                        #    post = discord.Embed()
+                        #    post.add_field(name="New Post From overstalk.io:", value=forum_link)
+                        #    post.set_footer(text="The post was too long to send on Discord.")
+                        #else:    
+                        #    post = embed_format(title, content, stamps)
+                        #    await self.bot.send_message(channel_obj, embed=post)
                 dataIO.save_json("data/overstalk/recent.json", self.most_recent)
                 print("Got new post.  Sleeping...")
             await asyncio.sleep(CHECK_DELAY)
