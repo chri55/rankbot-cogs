@@ -253,7 +253,7 @@ class Rank:
         dataIO.save_json("data/rank/servers.json", self.servers)
         
     @commands.command(pass_context=True)
-    async def ping(self, ctx):
+    async def testing(self, ctx):
         await self.bot.say("Pong   o/")
         for m in ctx.message.server.members:
             print(m.name + " - " + m.server_permissions)
