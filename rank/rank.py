@@ -251,6 +251,12 @@ class Rank:
             else:
                 await self.bot.say("This will not be enabled for now.")
         dataIO.save_json("data/rank/servers.json", self.servers)
+        
+    @commands.command(pass_context=True)
+    async def ping(self, ctx):
+        await self.bot.say("Pong   o/")
+        for m in ctx.message.server.members:
+            print(m.name + " - " + m.server_permissions)
     
     def author_role(role):
         if role.name.capitalize() in skillRankRoles:
