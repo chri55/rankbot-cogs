@@ -129,7 +129,7 @@ class Fight:
                 self.players[server.id][author.id]["HP"] = 30
                 self.players[server.id][author.id]["GOLD"] = 100
                 self.players[server.id][author.id]["LEVEL"] = 1
-                self.players[server.id][author.id]["IN_BATTLE"] = True
+                self.players[server.id][author.id]["IN_BATTLE"] = False
                 await self.bot.say("Your character has been created.")
                 dataIO.save_json("data/fight/players.json", self.players)
             else:
