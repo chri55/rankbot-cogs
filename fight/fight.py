@@ -108,61 +108,62 @@ class Fight:
             await self.bot.say("This hasnt been enabled for the server.")
                 
             
-        @_fight.command(pass_context=True)
-        async def register(self, ctx):
-            """Register your character in the fight!"""
-            author = ctx.message.author
-            server = ctx.message.server
-            if is_enabled(server):
-                if author.id not in self.players[server.id]:
-                    self.players[server.id][author.id] = {}
-                    self.players[server.id][author.id]["HP"] = 30
-                    self.players[server.id][author.id]["GOLD"] = 100
-                    self.players[server.id][author.id]["LEVEL"] = 1
-                    self.players[server.id][author.id]["IN_BATTLE"] = True
-                    await self.bot.say("Your character has been created.")
-                    dataIO.save_json(self.players, "data/fight/players.json")
-                else:
-                    await self.bot.say("You already have a character!")
+    @_fight.command(pass_context=True)
+    async def register(self, ctx):
+        """Register your character in the fight!"""
+        author = ctx.message.author
+        server = ctx.message.server
+        if is_enabled(server):
+            if author.id not in self.players[server.id]:
+                self.players[server.id][author.id] = {}
+                self.players[server.id][author.id]["HP"] = 30
+                self.players[server.id][author.id]["GOLD"] = 100
+                self.players[server.id][author.id]["LEVEL"] = 1
+                self.players[server.id][author.id]["IN_BATTLE"] = True
+                await self.bot.say("Your character has been created.")
+                dataIO.save_json(self.players, "data/fight/players.json")
             else:
-                await self.bot.say("This hasnt been enabled for the server.")
+                await self.bot.say("You already have a character!")
+        else:
+            await self.bot.say("This hasnt been enabled for the server.")
                 
-        @commands.command(pass_context=True)
-        async def fightstats(self, ctx):
-            author = ctx.message.author
-            server = ctx.message.server
-            if is_enabled(server):
-                if author.id in self.players[server.id]:
-                    name = author.name
-                    gold = self.players[server.id][author.id]["GOLD"]
-                    hp = self.players[server.id][author.id]["HP"]
-                    level = self.players[server.id][author.id]["LEVEL"]
-                    await self.bot.say("```\nPlayer: {0}\n\nTotal Gold: {1}\n\nTotal HP: {2}\n\nLevel: {3}```".format(name, gold, hp, level))
-                else:
-                    await self.bot.say("You haven't registered a character here!")
+        
+    @commands.command(pass_context=True)
+    async def fightstats(self, ctx):
+        author = ctx.message.author
+        server = ctx.message.server
+        if is_enabled(server):
+            if author.id in self.players[server.id]:
+                name = author.name
+                gold = self.players[server.id][author.id]["GOLD"]
+                hp = self.players[server.id][author.id]["HP"]
+                level = self.players[server.id][author.id]["LEVEL"]
+                await self.bot.say("```\nPlayer: {0}\n\nTotal Gold: {1}\n\nTotal HP: {2}\n\nLevel: {3}```".format(name, gold, hp, level))
             else:
-                await self.bot.say("This hasnt been enabled for the server.")
+                await self.bot.say("You haven't registered a character here!")
+        else:
+            await self.bot.say("This hasnt been enabled for the server.")
                 
-        @commands.command(pass_context=True)
-        @checks.mod_or_permissions(manage_server=True)
-        async def fightset(self, ctx):
-            server = ctx.message.server
-            author = ctx.message.author
-            if server.id not in self.players:
-                self.players[server.id] = {}
-                await self.bot.say("Fight module has been enabled! Have fun!")
+    @commands.command(pass_context=True)
+    @checks.mod_or_permissions(manage_server=True)
+    async def fightset(self, ctx):
+        server = ctx.message.server
+        author = ctx.message.author
+        if server.id not in self.players:
+            self.players[server.id] = {}
+            await self.bot.say("Fight module has been enabled! Have fun!")
+        else:
+            await self.bot.say("WARNING: Want to disable the fight module in the server? All data will be deleted!\n\nType `yes` to continue.")
+            reponse = await self.bot.wait_for_message(timeout=15, author=author, content="yes")
+            if response.content.lower() == "yes":
+                del self.players[server.id]
+                await self.bot.say("It has been done. Bye bye fighters!")
             else:
-                await self.bot.say("WARNING: Want to disable the fight module in the server? All data will be deleted!\n\nType `yes` to continue.")
-                reponse = await self.bot.wait_for_message(timeout=15, author=author, content="yes")
-                if response.content.lower() == "yes":
-                    del self.players[server.id]
-                    await self.bot.say("It has been done. Bye bye fighters!")
-                else:
-                    await self.bot.say("I won't disable this for now.")
-            dataIO.save_json(self.players, "data/fight/players.json")
+                await self.bot.say("I won't disable this for now.")
+        dataIO.save_json(self.players, "data/fight/players.json")
             
-        def is_enabled(server: discord.Server):
-            return server.id in self.players
+    def is_enabled(server: discord.Server):
+        return server.id in self.players
                         
         
 def check_folders():
