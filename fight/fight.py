@@ -160,7 +160,7 @@ class Fight:
             self.players[server.id] = {}
             await self.bot.say("Fight module has been enabled! Have fun!")
         else:
-            await self.bot.say("WARNING: Want to disable the fight module in the server? All data will be deleted!\n\nType `yes` to continue.")
+            reponse = await self.bot.say("WARNING: Want to disable the fight module in the server? All data will be deleted!\n\nType `yes` to continue.")
             reponse = await self.bot.wait_for_message(timeout=15, author=author, content="yes")
             if response.content.lower() == "yes":
                 del self.players[server.id]
