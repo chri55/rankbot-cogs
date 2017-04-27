@@ -92,14 +92,14 @@ class Fight:
                             hp -= enemyatk
                             await self.bot.say("Enemy attacked for {0}! You have {1} HP left.".format(enemyatk, hp))
                     if response.content.lower() == "run":
-                        chance = random.randint(1, 21):
-                            if chance <= 10:
-                                await self.bot.say("You were able to run away!")
-                                enemy.hp = 0
-                            else:
-                                enemyatk = enemy.attack()
-                                hp -= enemyatk
-                                await self.bot.say("Unable to run! Enemy attacked for {0}! You have {1} HP left.".format(enemyatk, hp))
+                        chance = random.randint(1, 21)
+                        if chance <= 10:
+                            await self.bot.say("You were able to run away!")
+                            enemy.hp = 0
+                        else:
+                            enemyatk = enemy.attack()
+                            hp -= enemyatk
+                            await self.bot.say("Unable to run! Enemy attacked for {0}! You have {1} HP left.".format(enemyatk, hp))
 
                 self.players[server.id][player.id]["IN_BATTLE"] = False
                 self.players[server.id][player.id]["GOLD"] += gold
