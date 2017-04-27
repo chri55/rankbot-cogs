@@ -22,7 +22,7 @@ class Enemy:
         self.hp = players[server.id][author.id]["HP"]
         self.gold = random.randint(1, 15) * players[server.id][author.id]["LEVEL"]
         
-    def attack(self, author: discord.Member):
+    def attack(self):
         return random.randint(1,4)
     
     def givegold(self):
