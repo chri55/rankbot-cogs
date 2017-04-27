@@ -59,6 +59,7 @@ class Fight:
                 return
             elif self.players[server.id][author.id]["IN_BATTLE"]:
                 await self.bot.say("You are already in a battle!")
+                return
             else:
                 self.players[server.id][author.id]["IN_BATTLE"] = True
                 dataIO.save_json("data/fight/players.json", self.players)
