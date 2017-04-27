@@ -57,8 +57,11 @@ class Fight:
             if author.id not in self.players[server.id]:
                 await self.bot.say("You need to register to fight!")
                 return
+            elif self.players[server.id][author.id]["IN_BATTLE"]:
+                await self.bot.say("You are already in a battle!")
             else:
                 self.players[server.id][author.id]["IN_BATTLE"] = True
+                dataIO.save_json("data/fight/players.json", self.players)
                 enemy = Enemy(author, server, self.players)
                 hp = self.players[server.id][author.id]["HP"]
                 gold = self.players[server.id][author.id]["GOLD"]
@@ -142,7 +145,7 @@ class Fight:
                 gold = self.players[server.id][author.id]["GOLD"]
                 hp = self.players[server.id][author.id]["HP"]
                 level = self.players[server.id][author.id]["LEVEL"]
-                await self.bot.say("```\nPlayer: {0}\n\nTotal Gold: {1}\n\nTotal HP: {2}\n\nLevel: {3}```".format(name, gold, hp, level))
+                await self.bot.say("```\nPlayer: {0}\n\nTotal Gold: {1}\n\nCurrent HP: {2}\n\nLevel: {3}```".format(name, gold, hp, level))
             else:
                 await self.bot.say("You haven't registered a character here!")
         else:
