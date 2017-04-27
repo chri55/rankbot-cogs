@@ -82,11 +82,13 @@ class Fight:
                         await self.bot.say("Attacked for {0}! Enemy has {1} HP left.".format(atk, enemy.hp)) 
                         enemyatk = enemy.attack()
                         hp -= enemyatk
-                        await self.bot.say("Enemy attacked for {0}! You have {1} HP left.".format(enemyatk, hp))
+                        await self.bot.say("Enemy attacked for {0}! {2} has {1} HP left.".format(enemyatk, hp, author.name))
                         if enemy.hp <= 0:
                             allgold = enemy.giveall()
                             gold += allgold
                             await self.bot.say("Enemy defeated! +{} gold.".format(allgold)) 
+                        if hp <= 0:
+                            await self.bot.say("You were slain! No gold gained.")
                     if response.content.lower() == "steal":
                         chance = random.randint(1, 21)
                         if chance <= 5: # Able to run away. 
@@ -100,7 +102,7 @@ class Fight:
                             await self.bot.say("Attacked for {0}! Enemy has {1} HP left.".format(atk, enemy.hp)) 
                             enemyatk = enemy.attack()
                             hp -= enemyatk
-                            await self.bot.say("Enemy attacked for {0}! You have {1} HP left.".format(enemyatk, hp))
+                            await self.bot.say("Enemy attacked for {0}! {2} has {1} HP left.".format(enemyatk, hp, author.name))
                     if response.content.lower() == "run":
                         chance = random.randint(1, 21)
                         if chance <= 10:
@@ -109,7 +111,7 @@ class Fight:
                         else:
                             enemyatk = enemy.attack()
                             hp -= enemyatk
-                            await self.bot.say("Unable to run! Enemy attacked for {0}! You have {1} HP left.".format(enemyatk, hp))
+                            await self.bot.say("Unable to run! Enemy attacked for {0}! {2} has {1} HP left.".format(enemyatk, hp, author.name))
 
                 self.players[server.id][author.id]["IN_BATTLE"] = False
                 self.players[server.id][author.id]["GOLD"] = gold
