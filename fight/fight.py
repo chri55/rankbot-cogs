@@ -53,7 +53,7 @@ class Fight:
         TIMEOUT = 60
         author = ctx.message.author
         server = ctx.message.server
-        if is_enabled(server):
+        if server.id in self.players:
             if author.id not in self.players[server.id]:
                 await self.bot.say("You need to register to fight!")
                 return
@@ -117,7 +117,7 @@ class Fight:
         """Register your character in the fight!"""
         author = ctx.message.author
         server = ctx.message.server
-        if is_enabled(server):
+        if server.id in self.players:
             if author.id not in self.players[server.id]:
                 self.players[server.id][author.id] = {}
                 self.players[server.id][author.id]["HP"] = 30
@@ -136,7 +136,7 @@ class Fight:
     async def fightstats(self, ctx):
         author = ctx.message.author
         server = ctx.message.server
-        if is_enabled(server):
+        if server.id in self.players:
             if author.id in self.players[server.id]:
                 name = author.name
                 gold = self.players[server.id][author.id]["GOLD"]

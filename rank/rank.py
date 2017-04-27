@@ -264,8 +264,7 @@ def check_folders():
 
 def check_files():
     f = "data/rank/servers.json"
-
-        dataIO.save_json(f, [])
+    dataIO.save_json(f, [])
 
 def setup(bot):
     check_folders()
