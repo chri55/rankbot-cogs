@@ -39,6 +39,9 @@ class Fight:
         self.settings = dataIO.load_json("data/fight/settings.json")
         self.players = dataIO.load_json("data/fight/players.json")
         
+    def is_enabled(server: discord.Server):
+        return server.id in self.players
+        
     @commands.group(pass_context=True, name="fight")
     async def _fight(self, ctx):
         if ctx.invoked_subcommand is None:
@@ -161,9 +164,6 @@ class Fight:
             else:
                 await self.bot.say("I won't disable this for now.")
         dataIO.save_json("data/fight/players.json", self.players)
-            
-    def is_enabled(server: discord.Server):
-        return server.id in self.players
                         
         
 def check_folders():
