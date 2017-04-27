@@ -60,7 +60,7 @@ class Fight:
             else:
                 self.players[server.id][author.id]["IN_BATTLE"] = True
                 enemy = Enemy(author, server, self.players)
-                hp = self.players[server.id][author.id]
+                hp = self.players[server.id][author.id]["HP"]
                 gold = self.players[server.id][author.id]["GOLD"]
                 while enemy.hp > 0 and hp > 0:
                     await self.bot.say("Type `fight`, `steal`, or `run`.\n"
