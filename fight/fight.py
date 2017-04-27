@@ -61,7 +61,7 @@ class Fight:
                 self.players[server.id][author.id]["IN_BATTLE"] = True
                 enemy = Enemy(author, server, self.players)
                 hp = self.players[server.id][author.id]
-                gold = self.players[server.id][player.id]["GOLD"]
+                gold = self.players[server.id][author.id]["GOLD"]
                 while enemy.hp > 0 and hp > 0:
                     await self.bot.say("Type `fight`, `steal`, or `run`.\n"
                                        "`fight` will make you attack the enemy.\n"
@@ -105,8 +105,8 @@ class Fight:
                             hp -= enemyatk
                             await self.bot.say("Unable to run! Enemy attacked for {0}! You have {1} HP left.".format(enemyatk, hp))
 
-                self.players[server.id][player.id]["IN_BATTLE"] = False
-                self.players[server.id][player.id]["GOLD"] += gold
+                self.players[server.id][author.id]["IN_BATTLE"] = False
+                self.players[server.id][author.id]["GOLD"] += gold
                 dataIO.save_json("data/fight/players.json", self.players)
         else:
             await self.bot.say("This hasnt been enabled for the server.")
