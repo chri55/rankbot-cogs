@@ -84,7 +84,9 @@ class Fight:
                         hp -= enemyatk
                         await self.bot.say("Enemy attacked for {0}! You have {1} HP left.".format(enemyatk, hp))
                         if enemy.hp <= 0:
-                            gold += enemy.giveall()
+                            allgold = enemy.giveall()
+                            gold += allgold
+                            await self.bot.say("Enemy defeated! +{} gold.".format(allgold)) 
                     if response.content.lower() == "steal":
                         chance = random.randint(1, 21)
                         if chance <= 5: # Able to run away. 
@@ -162,8 +164,8 @@ class Fight:
             await self.bot.say("Fight module has been enabled! Have fun!")
         else:
             await self.bot.say("WARNING: Want to disable the fight module in the server? All data will be deleted!\n\nType `yes` to continue.")
-            reponse = await self.bot.wait_for_message(timeout=15, author=author, content="yes")
-            if response is not None and reponse.content.lower() == "yes":
+            response = await self.bot.wait_for_message(timeout=15, author=author, content="yes")
+            if response is not None and response.content.lower() == "yes":
                 del self.players[server.id]
                 await self.bot.say("It has been done. Bye bye fighters!")
             else:
