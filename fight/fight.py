@@ -109,7 +109,7 @@ class Fight:
                             await self.bot.say("Unable to run! Enemy attacked for {0}! You have {1} HP left.".format(enemyatk, hp))
 
                 self.players[server.id][author.id]["IN_BATTLE"] = False
-                self.players[server.id][author.id]["GOLD"] += gold
+                self.players[server.id][author.id]["GOLD"] = gold
                 dataIO.save_json("data/fight/players.json", self.players)
         else:
             await self.bot.say("This hasnt been enabled for the server.")
