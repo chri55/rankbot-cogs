@@ -1,0 +1,10 @@
+{
+	"AUTHOR" : "chri55 (Clarf#4556)",
+	"INSTALL_MSG" : "Have fun fighting for gold!",
+	"NAME" : "Fight",
+	"SHORT" : "Fight your friends for gold dominance!",
+	"DESCRIPTION" : "Fight to achieve the most gold! PvP planned soon.",
+	"TAGS" : [],
+	"REQUIREMENTS" : ["os", "asyncio", "collections"],
+	"HIDDEN" : false
+}
