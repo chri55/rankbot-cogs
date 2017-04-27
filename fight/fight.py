@@ -103,7 +103,7 @@ class Fight:
 
                 self.players[server.id][player.id]["IN_BATTLE"] = False
                 self.players[server.id][player.id]["GOLD"] += gold
-                dataIO.save_json(self.players, "data/fight/player.json")
+                dataIO.save_json("data/fight/players.json", self.players)
         else:
             await self.bot.say("This hasnt been enabled for the server.")
                 
@@ -121,7 +121,7 @@ class Fight:
                 self.players[server.id][author.id]["LEVEL"] = 1
                 self.players[server.id][author.id]["IN_BATTLE"] = True
                 await self.bot.say("Your character has been created.")
-                dataIO.save_json(self.players, "data/fight/players.json")
+                dataIO.save_json("data/fight/players.json", self.players)
             else:
                 await self.bot.say("You already have a character!")
         else:
@@ -160,7 +160,7 @@ class Fight:
                 await self.bot.say("It has been done. Bye bye fighters!")
             else:
                 await self.bot.say("I won't disable this for now.")
-        dataIO.save_json(self.players, "data/fight/players.json")
+        dataIO.save_json("data/fight/players.json", self.players)
             
     def is_enabled(server: discord.Server):
         return server.id in self.players
