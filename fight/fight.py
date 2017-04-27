@@ -34,13 +34,14 @@ class Enemy:
 class Fight:
     """Fight your friends (or enemies) for money!"""
     
+    def is_enabled(server: discord.Server):
+        return server.id in self.players
+    
     def __init__(self, bot):
         self.bot = bot
         self.settings = dataIO.load_json("data/fight/settings.json")
         self.players = dataIO.load_json("data/fight/players.json")
         
-    def is_enabled(server: discord.Server):
-        return server.id in self.players
         
     @commands.group(pass_context=True, name="fight")
     async def _fight(self, ctx):
