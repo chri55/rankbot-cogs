@@ -93,9 +93,10 @@ class Fight:
                             gold += allgold
                             s += "Enemy defeated! +{} gold.\n".format(allgold)
                             hp = 1
-                        if hp <= 0:
+                        elif hp <= 0:
                             s += "You were slain! No gold gained.\n"
-                        s += help_str
+                        else:
+                            s += help_str
                         await self.bot.say(s)
                         
                     if response.content.lower() == "steal":
