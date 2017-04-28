@@ -127,7 +127,7 @@ class Fight:
                     if response.content.lower() == "run":
                         chance = random.randint(1, 21)
                         if chance <= 10:
-                            await self.bot.say("You were able to run away!")
+                            s += "You were able to run away!"
                             enemy.hp = 0
                         else:
                             enemyatk = enemy.attack()
