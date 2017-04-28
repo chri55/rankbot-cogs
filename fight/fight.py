@@ -66,43 +66,62 @@ class Fight:
                 enemy = Enemy(author, server, self.players)
                 hp = self.players[server.id][author.id]["HP"]
                 gold = self.players[server.id][author.id]["GOLD"]
-                while enemy.hp > 0 and hp > 0:
-                    await self.bot.say("Type `fight`, `steal`, or `run`.\n"
+                help_str = ("Type `fight`, `steal`, or `run`.\n"
                                        "`fight` will make you attack the enemy.\n"
                                        "`steal` attempts to take some gold and run away.\n"
                                        "`run` attempts to leave the battle")
+                await self.bot.say(help_str)
+                while enemy.hp > 0 and hp > 0:
+                    s = ""
                     response = await self.bot.wait_for_message(timeout=TIMEOUT, author=author)
                     if response is None:
                         await self.bot.say("Too long. The enemy ran away.")
                         enemy.hp = 0
+                        # Before this 'break' it would catch AttributeErrors
+                        # on the next statement, never finish and leave people in battle forever. RIP
+                        break
                     if response.content.lower() == "fight":
                         ## Can tweak numbers later...
-                        atk = random.randint(1,4) * self.players[server.id][author.id]["LEVEL"]
-                        enemy.hp -= atk
-                        await self.bot.say("Attacked for {0}! Enemy has {1} HP left.".format(atk, enemy.hp)) 
+                        atk = random.randint(1,6) # * self.players[server.id][author.id]["LEVEL"] (possible idea)
+                        enemy.hp -= atk 
+                        s += "Attacked for {0}! Enemy has {1} HP left.\n\n".format(atk, enemy.hp)
                         enemyatk = enemy.attack()
                         hp -= enemyatk
-                        await self.bot.say("Enemy attacked for {0}! {2} has {1} HP left.".format(enemyatk, hp, author.name))
+                        s += "Enemy attacked for {0}! {2} has {1} HP left.\n\n".format(enemyatk, hp, author.name)
                         if enemy.hp <= 0:
                             allgold = enemy.giveall()
                             gold += allgold
-                            await self.bot.say("Enemy defeated! +{} gold.".format(allgold)) 
+                            s += "Enemy defeated! +{} gold.\n".format(allgold)
+                            hp = 1
                         if hp <= 0:
-                            await self.bot.say("You were slain! No gold gained.")
+                            s += "You were slain! No gold gained.\n"
+                        s += help_str
+                        await self.bot.say(s)
+                        
                     if response.content.lower() == "steal":
                         chance = random.randint(1, 21)
                         if chance <= 5: # Able to run away. 
                             goldgain = enemy.givegold()
                             gold += goldgain
-                            await self.bot.say("Stole successfully! +{} gold. Enemy is gone.".format(goldgain))
+                            s += "Stole successfully! +{} gold. Enemy is gone.".format(goldgain)
                             enemy.hp = 0
                         else:
-                            atk = random.randint(1,6)
+                            atk = random.randint(1,4)
                             enemy.hp -= atk
-                            await self.bot.say("Attacked for {0}! Enemy has {1} HP left.".format(atk, enemy.hp)) 
+                            s += "Steal failed! Attacked for {0}! Enemy has {1} HP left.\n\n".format(atk, enemy.hp)
                             enemyatk = enemy.attack()
                             hp -= enemyatk
-                            await self.bot.say("Enemy attacked for {0}! {2} has {1} HP left.".format(enemyatk, hp, author.name))
+                            s += "Enemy attacked for {0}! {2} has {1} HP left.\n\n".format(enemyatk, hp, author.name)
+                            if hp <= 0:
+                                s += "You were slain! No gold gained."
+                            elif enemy.hp <= 0:
+                                goldgain = enemy.givegold()
+                                gold += goldgain
+                                s += "Enemy defeated! +{} gold.\n".format(goldgain)
+                                s += help_str
+                            else: 
+                                s += help_str
+                        await self.bot.say(s)
                     if response.content.lower() == "run":
                         chance = random.randint(1, 21)
                         if chance <= 10:
@@ -111,7 +130,12 @@ class Fight:
                         else:
                             enemyatk = enemy.attack()
                             hp -= enemyatk
-                            await self.bot.say("Unable to run! Enemy attacked for {0}! {2} has {1} HP left.".format(enemyatk, hp, author.name))
+                            s += "Unable to run! Enemy attacked for {0}! {2} has {1} HP left.\n\n".format(enemyatk, hp, author.name)
+                            if hp <= 0:
+                                s += "You were slain! No gold gained."
+                            else: 
+                                s += help_str
+                        await self.bot.say(s)
 
                 self.players[server.id][author.id]["IN_BATTLE"] = False
                 self.players[server.id][author.id]["GOLD"] = gold
@@ -150,7 +174,7 @@ class Fight:
                 gold = self.players[server.id][author.id]["GOLD"]
                 hp = self.players[server.id][author.id]["HP"]
                 level = self.players[server.id][author.id]["LEVEL"]
-                await self.bot.say("```\nPlayer: {0}\n\nTotal Gold: {1}\n\nCurrent HP: {2}\n\nLevel: {3}```".format(name, gold, hp, level))
+                await self.bot.say("```\nPlayer: {0}\n\nTotal Gold: {1}\n\nCurrent HP: {2}\n\nLevel (coming soon!): {3}```".format(name, gold, hp, level))
             else:
                 await self.bot.say("You haven't registered a character here!")
         else:
