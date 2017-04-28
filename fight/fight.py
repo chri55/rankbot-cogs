@@ -198,6 +198,7 @@ class Fight:
                 i = 1
                 for user in sorted_list:
                     s += u"{}. ➤ {} : {}\n\n".format(i, user[0], user[1])
+                    i += 1
             else:
                 for i in range(10):
                     s += u"{}. ➤ {} : {}\n\n".format(i + 1, sorted_list[i][0], sorted_list[i][1])
