@@ -200,7 +200,7 @@ class Fight:
                     s += u"{}. ➤ {} : {}\n\n".format(i, user[0], user[1])
             else:
                 for i in range(10):
-                    s += s += u"{}. ➤ {} : {}\n\n".format(i + 1, sorted_list[i][0], sorted_list[i][1])
+                    s += u"{}. ➤ {} : {}\n\n".format(i + 1, sorted_list[i][0], sorted_list[i][1])
             s += "```"
             await self.bot.say(s)
         else:
