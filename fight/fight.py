@@ -76,7 +76,7 @@ class Fight:
                     s = ""
                     response = await self.bot.wait_for_message(timeout=TIMEOUT, author=author)
                     if response is None:
-                        await self.bot.say("Too long. {}'s enemy ran away.".format(author.name))
+                        await self.bot.say("Too long. {}'s enemy ran away.".format(author.mention))
                         enemy.hp = 0
                         # Before this 'break' it would catch AttributeErrors
                         # on the next statement, never finish and leave people in battle forever. RIP
