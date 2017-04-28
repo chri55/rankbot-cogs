@@ -76,7 +76,7 @@ class Fight:
                     s = ""
                     response = await self.bot.wait_for_message(timeout=TIMEOUT, author=author)
                     if response is None:
-                        await self.bot.say("Too long. The enemy ran away.")
+                        await self.bot.say("Too long. {}'s enemy ran away.".format(author.name))
                         enemy.hp = 0
                         # Before this 'break' it would catch AttributeErrors
                         # on the next statement, never finish and leave people in battle forever. RIP
@@ -88,7 +88,7 @@ class Fight:
                         s += "Attacked for {0}! Enemy has {1} HP left.\n\n".format(atk, enemy.hp)
                         enemyatk = enemy.attack()
                         hp -= enemyatk
-                        s += "Enemy attacked for {0}! {2} has {1} HP left.\n\n".format(enemyatk, hp, author.name)
+                        s += "Enemy attacked for {0}! {2} has {1} HP left.\n\n".format(enemyatk, hp, author.mention)
                         if enemy.hp <= 0:
                             allgold = enemy.giveall()
                             gold += allgold
@@ -113,7 +113,7 @@ class Fight:
                             s += "Steal failed! Attacked for {0}! Enemy has {1} HP left.\n\n".format(atk, enemy.hp)
                             enemyatk = enemy.attack()
                             hp -= enemyatk
-                            s += "Enemy attacked for {0}! {2} has {1} HP left.\n\n".format(enemyatk, hp, author.name)
+                            s += "Enemy attacked for {0}! {2} has {1} HP left.\n\n".format(enemyatk, hp, author.mention)
                             if hp <= 0:
                                 s += "You were slain! No gold gained."
                             elif enemy.hp <= 0:
@@ -132,7 +132,7 @@ class Fight:
                         else:
                             enemyatk = enemy.attack()
                             hp -= enemyatk
-                            s += "Unable to run! Enemy attacked for {0}! {2} has {1} HP left.\n\n".format(enemyatk, hp, author.name)
+                            s += "Unable to run! Enemy attacked for {0}! {2} has {1} HP left.\n\n".format(enemyatk, hp, author.mention)
                             if hp <= 0:
                                 s += "You were slain! No gold gained."
                             else: 
