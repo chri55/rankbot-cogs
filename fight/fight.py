@@ -157,7 +157,7 @@ class Fight:
                     if wager < self.players[server.id][author.id]["GOLD"] and wager < self.players[server.id][opponent.id]["GOLD"]:
                         await self.bot.say("{0}, {1} would like to battle you for {2} gold!".format(opponent.mention, author.name, wager))
                         response = await self.bot.wait_for_message(timeout=60, author=opponent, content="agree")
-                        if response is not None and response.content.lower() == "yes":
+                        if response is not None and response.content.lower() == "agree":
                             ## BEGIN PLAYER LOOPING HERE!!!!
                             coinflip = random.randint(0, 1)
                             if coinflip == 1:
