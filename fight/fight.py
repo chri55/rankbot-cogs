@@ -150,6 +150,7 @@ class Fight:
         """Attempt to fight another user."""
         author = ctx.message.author
         server = ctx.message.server
+        wager = int(wager)
         if server.id in self.players:
             if author.id in self.players[server.id]:
                 if opponent.id in self.players[server.id]:
