@@ -177,7 +177,7 @@ class Fight:
                             while auth_hp > 0 and oppo_hp > 0:
                                 if turn: # AUTHOR TURN
                                     await self.bot.say("{}'s' turn:\n\n{}".format(author.name, help_str))
-                                    response = await self.bot.wait_for_message(timeout=60, author=author):
+                                    response = await self.bot.wait_for_message(timeout=60, author=author)
                                     if response is None:
                                         self.players[server.id][author.id]["GOLD"] -= wager
                                         self.players[server.id][opponent.id]["GOLD"] += wager
@@ -198,7 +198,7 @@ class Fight:
                                         await self.bot.say("{} has run away! {} is the winner. +{} gold.".format(author.name, opponent.mention,wager))
                                 else: #OPPONENT TURN
                                     await self.bot.say("{}'s' turn:\n\n{}".format(opponent.name, help_str))
-                                    response = await self.bot.wait_for_message(timeout=60, author=opponent):
+                                    response = await self.bot.wait_for_message(timeout=60, author=opponent)
                                     if response is None:
                                         self.players[server.id][opponent.id]["GOLD"] -= wager
                                         self.players[server.id][author.id]["GOLD"] += wager
