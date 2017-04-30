@@ -168,7 +168,7 @@ class Fight:
                             await self.bot.say("A coin has been flipped! {} will start the battle!".format(sp))
                             self.players[server.id][author.id]["IN_BATTLE"] = True
                             self.players[server.id][opponent.id]["IN_BATTLE"] = True
-                            dataIO.save_json("data/fight/players.json", self.players
+                            dataIO.save_json("data/fight/players.json", self.players)
                             auth_hp = self.players[server.id][author.id]["HP"]
                             oppo_hp = self.players[server.id][opponent.id]["HP"]
                             help_str = ("Type `fight` or `run`.\n"
