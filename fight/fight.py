@@ -18,37 +18,37 @@ import operator
 
 class Enemy:
     """A representation of an enemy for a user to fight."""
-    
+
     def __init__(self, author: discord.Member, server: discord.Server, players):
         self.hp = players[server.id][author.id]["HP"]
         self.gold = random.randint(1, 15) * players[server.id][author.id]["LEVEL"]
-        
+
     def attack(self):
         return random.randint(1,4)
-    
+
     def givegold(self):
         return random.randint(1, self.gold + 1)
-    
+
     def giveall(self):
         return self.gold
 
 class Fight:
     """Fight your friends (or enemies) for money!"""
-    
+
     def is_enabled(server: discord.Server):
         return server.id in self.players
-    
+
     def __init__(self, bot):
         self.bot = bot
         self.settings = dataIO.load_json("data/fight/settings.json")
         self.players = dataIO.load_json("data/fight/players.json")
-        
-        
+
+
     @commands.group(pass_context=True, name="fight")
     async def _fight(self, ctx):
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
-    
+
     @_fight.command(pass_context=True, name="enemy")
     async def _enemy(self, ctx):
         TIMEOUT = 60
@@ -84,7 +84,7 @@ class Fight:
                     if response.content.lower() == "fight":
                         ## Can tweak numbers later...
                         atk = random.randint(1,6) # * self.players[server.id][author.id]["LEVEL"] (possible idea)
-                        enemy.hp -= atk 
+                        enemy.hp -= atk
                         s += "Attacked for {0}! Enemy has {1} HP left.\n\n".format(atk, enemy.hp)
                         enemyatk = enemy.attack()
                         hp -= enemyatk
@@ -99,10 +99,10 @@ class Fight:
                         else:
                             s += help_str
                         await self.bot.say(s)
-                        
+
                     if response.content.lower() == "steal":
                         chance = random.randint(1, 21)
-                        if chance <= 5: # Able to run away. 
+                        if chance <= 5: # Able to run away.
                             goldgain = enemy.givegold()
                             gold += goldgain
                             s += "Stole successfully! +{} gold. Enemy is gone.".format(goldgain)
@@ -121,7 +121,7 @@ class Fight:
                                 gold += goldgain
                                 s += "Enemy defeated! +{} gold.\n".format(goldgain)
                                 s += help_str
-                            else: 
+                            else:
                                 s += help_str
                         await self.bot.say(s)
                     if response.content.lower() == "run":
@@ -135,7 +135,7 @@ class Fight:
                             s += "Unable to run! Enemy attacked for {0}! {2} has {1} HP left.\n\n".format(enemyatk, hp, author.mention)
                             if hp <= 0:
                                 s += "You were slain! No gold gained."
-                            else: 
+                            else:
                                 s += help_str
                         await self.bot.say(s)
 
@@ -144,8 +144,94 @@ class Fight:
                 dataIO.save_json("data/fight/players.json", self.players)
         else:
             await self.bot.say("This hasnt been enabled for the server.")
-                
-            
+
+    @_fight.command(pass_context=True, name="user")
+    async def _user(self, ctx, opponent: discord.Member, wager):
+        """Attempt to fight another user."""
+        author = ctx.message.author
+        server = ctx.message.server
+        if server.id in self.players:
+            if author.id in self.players:
+                if opponent.id in self.players:
+                    if wager < self.players[server.id][author.id]["GOLD"] and wager < self.players[server.id][author.id]["GOLD"]:
+                        await self.bot.say("{0}, {1} would like to battle you for {2} gold!".format(opponent.mention, author.name, wager))
+                        response = await self.bot.wait_for_message(timeout=60, author=opponent, content="agree")
+                        if response is not None and response.content.lower() == "yes":
+                            ## BEGIN PLAYER LOOPING HERE!!!!
+                            coinflip = random.randint(0, 1)
+                            if coinflip == 1:
+                                sp = opponent.name
+                                turn = True
+                            else:
+                                sp = author.name
+                                turn = False
+                            await self.bot.say("A coin has been flipped! {} will start the battle!".format(sp))
+                            self.players[server.id][author.id]["IN_BATTLE"] = True
+                            self.players[server.id][opponent.id]["IN_BATTLE"] = True
+                            dataIO.save_json("data/fight/players.json", self.players
+                            auth_hp = self.players[server.id][author.id]["HP"]
+                            oppo_hp = self.players[server.id][opponent.id]["HP"]
+                            help_str = ("Type `fight` or `run`.\n"
+                                                   "`fight` will make you attack the enemy.\n"
+                                                   "`run` forfeits the battle.")
+                            while auth_hp > 0 and oppo_hp > 0:
+                                if turn: # AUTHOR TURN
+                                    await self.bot.say("{}'s' turn:\n\n{}".format(author.name, help_str))
+                                    response = await self.bot.wait_for_message(timeout=60, author=author):
+                                    if response is None:
+                                        self.players[server.id][author.id]["GOLD"] -= wager
+                                        self.players[server.id][opponent.id]["GOLD"] += wager
+                                        await self.bot.say("Battle forfeited by {0}. {1} gains {2} gold.".format(author.name, opponent.mention, wager))
+                                        break
+                                    elif response.content.lower() == "fight":
+                                        atk = random.randint(2,6)
+                                        miss_chance = random.randint(1,50)
+                                        if miss_chance % 10 == 0:
+                                            await self.bot.say("{}'s attack missed!".format(author.name))
+                                        else:
+                                            oppo_hp -= atk
+                                            await self.bot.say("{0} hit the opponent for {1}.\n\n{2}: {3}/{4} HP".format(author.name, atk, opponent.name, oppo_hp, self.players[server.id][opponent.id]["HP"]))
+                                            turn = not turn
+                                    elif response.content.lower() == "run":
+                                        auth_hp = 0
+                                        self.players[server.id][opponent.id]["GOLD"] += wager
+                                        await self.bot.say("{} has run away! {} is the winner. +{} gold.".format(author.name, opponent.mention,wager))
+                                else: #OPPONENT TURN
+                                    await self.bot.say("{}'s' turn:\n\n{}".format(opponent.name, help_str))
+                                    response = await self.bot.wait_for_message(timeout=60, author=opponent):
+                                    if response is None:
+                                        self.players[server.id][opponent.id]["GOLD"] -= wager
+                                        self.players[server.id][author.id]["GOLD"] += wager
+                                        await self.bot.say("Battle forfeited by {0}. {1} gains {2} gold.".format(opponent.name, author.mention, wager))
+                                        break
+                                    elif response.content.lower() == "fight":
+                                        atk = random.randint(2,6)
+                                        miss_chance = random.randint(1,50)
+                                        if miss_chance % 10 == 0:
+                                            await self.bot.say("{}'s attack missed!".format(opponent.name))
+                                        else:
+                                            auth_hp -= atk
+                                            await self.bot.say("{0} hit the opponent for {1}.\n\n{2}: {3}/{4} HP".format(opponent.name, atk, author.name, auth_hp, self.players[server.id][author.id]["HP"]))
+                                            turn = not turn
+                                    elif response.content.lower() == "run":
+                                        oppo_hp = 0
+                                        self.players[server.id][author.id]["GOLD"] += wager
+                                        self.players[server.id][opponent.id]["GOLD"] -= wager
+                                        await self.bot.say("{} has run away! {} is the winner. +{} gold.".format(opponent.name, author.mention,wager))
+                            self.players[server.id][author.id]["IN_BATTLE"] = False
+                            self.players[server.id][opponent.id]["IN_BATTLE"] = True
+                            dataIO.save_json("data/fight/players.json", self.players)
+                            return
+                    else:
+                        await self.bot.say("Both players must have enough gold!")
+                else:
+                    await self.bot.say("That person needs to register to fight!")
+            else:
+                await self.bot.say("You need to register to fight!")
+        else:
+            await self.bot.say("This hasn't been enabled for the server.")
+
+
     @_fight.command(pass_context=True)
     async def register(self, ctx):
         """Register your character in the fight!"""
@@ -165,8 +251,8 @@ class Fight:
                 await self.bot.say("You already have a character!")
         else:
             await self.bot.say("This hasnt been enabled for the server.")
-                
-        
+
+
     @commands.command(pass_context=True)
     async def fightstats(self, ctx):
         author = ctx.message.author
@@ -182,7 +268,7 @@ class Fight:
                 await self.bot.say("You haven't registered a character here!")
         else:
             await self.bot.say("This hasnt been enabled for the server.")
-            
+
     @commands.command(pass_context=True)
     async def stash(self, ctx):
         """Shows who in the server has the highest amount of gold!"""
@@ -206,8 +292,8 @@ class Fight:
             await self.bot.say(s)
         else:
             await self.bot.say("This hasnt been enabled for the server.")
-        
-                
+
+
     @commands.command(pass_context=True)
     @checks.mod_or_permissions(manage_server=True)
     async def fightset(self, ctx):
@@ -225,14 +311,14 @@ class Fight:
             else:
                 await self.bot.say("I won't disable this for now.")
         dataIO.save_json("data/fight/players.json", self.players)
-                        
-        
+
+
 def check_folders():
     if not os.path.exists("data/fight"):
         print("Creating data/fight...")
         os.makedirs("data/fight")
     return
-        
+
 def check_files():
     f = "data/fight/settings.json"
     if not dataIO.is_valid_json(f):
