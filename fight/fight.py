@@ -152,8 +152,9 @@ class Fight:
         server = ctx.message.server
         wager = int(wager)
         if server.id in self.players:
-            if author.id in self.players[server.id]:
-                if opponent.id in self.players[server.id]:
+            if author.id in self.players[server.id] and not self.players[server.id][author.id]["IN_BATTLE"]:
+                if opponent.id in self.players[server.id] and not self.players[server.id][opponent.id]["IN_BATTLE"]:
+
                     if wager < self.players[server.id][author.id]["GOLD"] and wager < self.players[server.id][opponent.id]["GOLD"]:
                         await self.bot.say("{0}, {1} would like to battle you for {2} gold! Type `agree` to start.".format(opponent.mention, author.name, wager))
                         response = await self.bot.wait_for_message(timeout=60, author=opponent, content="agree")
