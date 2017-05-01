@@ -194,6 +194,14 @@ class Fight:
                                             oppo_hp -= atk
                                             await self.bot.say("{0} hit the opponent for {1}.\n\n{2}: {3}/{4} HP".format(author.name, atk, opponent.name, oppo_hp, self.players[server.id][opponent.id]["HP"]))
                                             turn = not turn
+                                        if auth_hp == 0:
+                                            self.players[server.id][opponent.id]["GOLD"] += wager
+                                            self.players[server.id][author.id]["GOLD"] -= wager
+                                            await self.bot.say("{} wins! +{} gold.".format(opponent.name, wager))
+                                        elif oppo_hp == 0:
+                                            self.players[server.id][opponent.id]["GOLD"] -= wager
+                                            self.players[server.id][author.id]["GOLD"] += wager
+                                            await self.bot.say("{} wins! +{} gold.".format(author.name, wager))
                                     elif response.content.lower() == "run":
                                         auth_hp = 0
                                         self.players[server.id][opponent.id]["GOLD"] += wager
@@ -216,6 +224,14 @@ class Fight:
                                             auth_hp -= atk
                                             await self.bot.say("{0} hit the opponent for {1}.\n\n{2}: {3}/{4} HP".format(opponent.name, atk, author.name, auth_hp, self.players[server.id][author.id]["HP"]))
                                             turn = not turn
+                                        if auth_hp == 0:
+                                            self.players[server.id][opponent.id]["GOLD"] += wager
+                                            self.players[server.id][author.id]["GOLD"] -= wager
+                                            await self.bot.say("{} wins! +{} gold.".format(opponent.name, wager))
+                                        elif oppo_hp == 0:
+                                            self.players[server.id][opponent.id]["GOLD"] -= wager
+                                            self.players[server.id][author.id]["GOLD"] += wager
+                                            await self.bot.say("{} wins! +{} gold.".format(author.name, wager))
                                     elif response.content.lower() == "run":
                                         oppo_hp = 0
                                         self.players[server.id][author.id]["GOLD"] += wager
