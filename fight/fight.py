@@ -161,10 +161,10 @@ class Fight:
                             ## BEGIN PLAYER LOOPING HERE!!!!
                             coinflip = random.randint(0, 1)
                             if coinflip == 1:
-                                sp = opponent.name
+                                sp = author.name
                                 turn = True
                             else:
-                                sp = author.name
+                                sp = opponent.name
                                 turn = False
                             await self.bot.say("A coin has been flipped! {} will start the battle!".format(sp))
                             self.players[server.id][author.id]["IN_BATTLE"] = True
@@ -189,6 +189,7 @@ class Fight:
                                         miss_chance = random.randint(1,50)
                                         if miss_chance % 10 == 0:
                                             await self.bot.say("{}'s attack missed!".format(author.name))
+                                            turn = not turn
                                         else:
                                             oppo_hp -= atk
                                             await self.bot.say("{0} hit the opponent for {1}.\n\n{2}: {3}/{4} HP".format(author.name, atk, opponent.name, oppo_hp, self.players[server.id][opponent.id]["HP"]))
@@ -196,6 +197,7 @@ class Fight:
                                     elif response.content.lower() == "run":
                                         auth_hp = 0
                                         self.players[server.id][opponent.id]["GOLD"] += wager
+                                        self.players[server.id][author.id]["GOLD"] -= wager
                                         await self.bot.say("{} has run away! {} is the winner. +{} gold.".format(author.name, opponent.mention,wager))
                                 else: #OPPONENT TURN
                                     await self.bot.say("{}'s' turn:\n\n{}".format(opponent.name, help_str))
