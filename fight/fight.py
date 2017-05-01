@@ -155,7 +155,7 @@ class Fight:
             if author.id in self.players[server.id]:
                 if opponent.id in self.players[server.id]:
                     if wager < self.players[server.id][author.id]["GOLD"] and wager < self.players[server.id][opponent.id]["GOLD"]:
-                        await self.bot.say("{0}, {1} would like to battle you for {2} gold!".format(opponent.mention, author.name, wager))
+                        await self.bot.say("{0}, {1} would like to battle you for {2} gold! Type `agree` to start.".format(opponent.mention, author.name, wager))
                         response = await self.bot.wait_for_message(timeout=60, author=opponent, content="agree")
                         if response is not None and response.content.lower() == "agree":
                             ## BEGIN PLAYER LOOPING HERE!!!!
@@ -194,11 +194,11 @@ class Fight:
                                             oppo_hp -= atk
                                             await self.bot.say("{0} hit the opponent for {1}.\n\n{2}: {3}/{4} HP".format(author.name, atk, opponent.name, oppo_hp, self.players[server.id][opponent.id]["HP"]))
                                             turn = not turn
-                                        if auth_hp == 0:
+                                        if auth_hp <= 0:
                                             self.players[server.id][opponent.id]["GOLD"] += wager
                                             self.players[server.id][author.id]["GOLD"] -= wager
                                             await self.bot.say("{} wins! +{} gold.".format(opponent.name, wager))
-                                        elif oppo_hp == 0:
+                                        elif oppo_hp <= 0:
                                             self.players[server.id][opponent.id]["GOLD"] -= wager
                                             self.players[server.id][author.id]["GOLD"] += wager
                                             await self.bot.say("{} wins! +{} gold.".format(author.name, wager))
@@ -224,11 +224,11 @@ class Fight:
                                             auth_hp -= atk
                                             await self.bot.say("{0} hit the opponent for {1}.\n\n{2}: {3}/{4} HP".format(opponent.name, atk, author.name, auth_hp, self.players[server.id][author.id]["HP"]))
                                             turn = not turn
-                                        if auth_hp == 0:
+                                        if auth_hp <= 0:
                                             self.players[server.id][opponent.id]["GOLD"] += wager
                                             self.players[server.id][author.id]["GOLD"] -= wager
                                             await self.bot.say("{} wins! +{} gold.".format(opponent.name, wager))
-                                        elif oppo_hp == 0:
+                                        elif oppo_hp <= 0:
                                             self.players[server.id][opponent.id]["GOLD"] -= wager
                                             self.players[server.id][author.id]["GOLD"] += wager
                                             await self.bot.say("{} wins! +{} gold.".format(author.name, wager))
