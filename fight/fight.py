@@ -344,7 +344,7 @@ class Fight:
     async def _reset(self, ctx):
         server = ctx.message.server
         for p in self.players[server.id]:
-            p["IN_BATTLE"] = False
+            self.players[server.id][p]["IN_BATTLE"] = False
         await self.bot.say("Battles have been reset.")
         dataIO.save_json("data/fight/players.json", self.players)
         pass
