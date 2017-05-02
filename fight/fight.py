@@ -144,6 +144,7 @@ class Fight:
                 dataIO.save_json("data/fight/players.json", self.players)
         else:
             await self.bot.say("This hasnt been enabled for the server.")
+        pass
 
     @_fight.command(pass_context=True, name="user")
     async def _user(self, ctx, opponent: discord.Member, wager):
@@ -240,7 +241,7 @@ class Fight:
                                         self.players[server.id][opponent.id]["GOLD"] -= wager
                                         await self.bot.say("{} has run away! {} is the winner. +{} gold.".format(opponent.name, author.mention,wager))
                             self.players[server.id][author.id]["IN_BATTLE"] = False
-                            self.players[server.id][opponent.id]["IN_BATTLE"] = True
+                            self.players[server.id][opponent.id]["IN_BATTLE"] = False
                             dataIO.save_json("data/fight/players.json", self.players)
                             return
                     else:
@@ -251,6 +252,7 @@ class Fight:
                 await self.bot.say("You need to register to fight!")
         else:
             await self.bot.say("This hasn't been enabled for the server.")
+        pass
 
 
     @_fight.command(pass_context=True)
@@ -272,6 +274,7 @@ class Fight:
                 await self.bot.say("You already have a character!")
         else:
             await self.bot.say("This hasnt been enabled for the server.")
+        pass
 
 
     @commands.command(pass_context=True)
@@ -289,6 +292,7 @@ class Fight:
                 await self.bot.say("You haven't registered a character here!")
         else:
             await self.bot.say("This hasnt been enabled for the server.")
+        pass
 
     @commands.command(pass_context=True)
     async def stash(self, ctx):
@@ -313,6 +317,7 @@ class Fight:
             await self.bot.say(s)
         else:
             await self.bot.say("This hasnt been enabled for the server.")
+        pass
 
 
     @commands.command(pass_context=True)
@@ -332,7 +337,17 @@ class Fight:
             else:
                 await self.bot.say("I won't disable this for now.")
         dataIO.save_json("data/fight/players.json", self.players)
-
+        pass
+        
+    @commands.command(pass_context=True, name="reset", hidden=True)
+    @checks.is_owner()
+    async def _reset(self, ctx):
+        server = ctx.message.server
+        for p in self.players[server.id]:
+            p["IN_BATTLE"] = False
+        await self.bot.say("Battles have been reset.")
+        dataIO.save_json("data/fight/players.json", self.players)
+        pass
 
 def check_folders():
     if not os.path.exists("data/fight"):
