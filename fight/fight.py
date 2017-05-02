@@ -244,6 +244,8 @@ class Fight:
                             self.players[server.id][opponent.id]["IN_BATTLE"] = False
                             dataIO.save_json("data/fight/players.json", self.players)
                             return
+                        else:
+                            await self.bot.say("Yeah, sorry {} but they didn't answer. I wouldn't either.".format(author.name))
                     else:
                         await self.bot.say("Both players must have enough gold!")
                 else:
