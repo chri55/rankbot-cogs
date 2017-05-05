@@ -352,7 +352,7 @@ class Fight:
                 await self.bot.say("I won't disable this for now.")
         dataIO.save_json("data/fight/players.json", self.players)
         pass
-        
+
     @commands.command(pass_context=True, name="reset", hidden=True)
     @checks.is_owner()
     async def _reset(self, ctx):
