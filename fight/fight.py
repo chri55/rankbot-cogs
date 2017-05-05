@@ -18,10 +18,11 @@ import operator
 
 class Enemy:
     """A representation of an enemy for a user to fight."""
-
+    ## This is kinda eh
     def __init__(self, author: discord.Member, server: discord.Server, players):
         self.hp = players[server.id][author.id]["HP"]
         self.gold = random.randint(1, 15) * players[server.id][author.id]["LEVEL"]
+
 
     def attack(self):
         return random.randint(1,4)
@@ -46,11 +47,18 @@ class Fight:
 
     @commands.group(pass_context=True, name="fight")
     async def _fight(self, ctx):
+    # Fight is a command group including subcommands:
+    # enemy
+    # register
+    # user
+    # Proper usage of these commands is in the format [p]fight subcmd
+    # [p] is the bot prefix
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
 
     @_fight.command(pass_context=True, name="enemy")
-    async def _enemy(self, ctx):
+    async def _enemy(self, ctx
+    """Fight an enemy for gold."""
         TIMEOUT = 60
         author = ctx.message.author
         server = ctx.message.server
@@ -62,6 +70,9 @@ class Fight:
                 await self.bot.say("You are already in a battle!")
                 return
             else:
+                # Making another class for the enemy was probably extra
+                # but I made class methods for it which I would
+                # have done in Unity anyways.
                 self.players[server.id][author.id]["IN_BATTLE"] = True
                 dataIO.save_json("data/fight/players.json", self.players)
                 enemy = Enemy(author, server, self.players)
@@ -152,9 +163,8 @@ class Fight:
         server = ctx.message.server
         wager = int(wager)
         if server.id in self.players:
-            if author.id in self.players[server.id] and not self.players[server.id][author.id]["IN_BATTLE"]:
-                if opponent.id in self.players[server.id] and not self.players[server.id][opponent.id]["IN_BATTLE"]:
-
+            if author.id in self.players[server.id]:
+                if opponent.id in self.players[server.id]:
                     if wager < self.players[server.id][author.id]["GOLD"] and wager < self.players[server.id][opponent.id]["GOLD"]:
                         await self.bot.say("{0}, {1} would like to battle you for {2} gold! Type `agree` to start.".format(opponent.mention, author.name, wager))
                         response = await self.bot.wait_for_message(timeout=60, author=opponent, content="agree")
@@ -255,7 +265,7 @@ class Fight:
 
     @_fight.command(pass_context=True)
     async def register(self, ctx):
-        """Register your character in the fight!"""
+        """Register your character in the fight! Use this if you need to register."""
         author = ctx.message.author
         server = ctx.message.server
         if server.id in self.players:
@@ -276,6 +286,7 @@ class Fight:
 
     @commands.command(pass_context=True)
     async def fightstats(self, ctx):
+        """See your current HP, Gold, and Level."""
         author = ctx.message.author
         server = ctx.message.server
         if server.id in self.players:
@@ -318,6 +329,7 @@ class Fight:
     @commands.command(pass_context=True)
     @checks.mod_or_permissions(manage_server=True)
     async def fightset(self, ctx):
+        """Admins: Use this to enable fights in the server."""
         server = ctx.message.server
         author = ctx.message.author
         if server.id not in self.players:
