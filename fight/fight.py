@@ -57,7 +57,7 @@ class Fight:
             await send_cmd_help(ctx)
 
     @_fight.command(pass_context=True, name="enemy")
-    async def _enemy(self, ctx
+    async def _enemy(self, ctx):
     """Fight an enemy for gold."""
         TIMEOUT = 60
         author = ctx.message.author
