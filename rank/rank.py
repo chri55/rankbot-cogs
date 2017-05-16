@@ -231,7 +231,7 @@ class Rank:
         pass
     
     @commands.command(pass_context=True, no_pm=True)
-    @checks.mod_or_permissions(manage_server=True)
+    @checks.admin_or_permissions()
     async def rankset(self, ctx):
         """Turns on and off the rank, role, and region commands in the server"""
         TIMEOUT=10
