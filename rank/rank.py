@@ -251,6 +251,7 @@ class Rank:
             else:
                 await self.bot.say("This will not be enabled for now.")
         dataIO.save_json("data/rank/servers.json", self.servers)
+        pass
         
     
     def author_role(role):
@@ -264,7 +265,8 @@ def check_folders():
 
 def check_files():
     f = "data/rank/servers.json"
-    dataIO.save_json(f, [])
+    if not is_valid_json(f):
+        dataIO.save_json(f, [])
 
 def setup(bot):
     check_folders()
