@@ -30,7 +30,7 @@ class Overstalk:
         help_str = "***Choose a channel on the server to send these alerts to by specicfying the number:\n***"
         num = 1
         for chan in chans:
-            help_str += num + ": " + chan.name + "\n"
+            help_str += str(num) + ": " + chan.name + "\n"
             num += 1
         response = self.bot.wait_for_message(timeout = 15, author = ctx.message.author)
         if response.content <= num and response.content >= 1:
