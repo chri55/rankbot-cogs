@@ -35,7 +35,7 @@ class Overstalk:
         await self.bot.say(help_str)
         resp = await self.bot.wait_for_message(timeout = 15, author = ctx.message.author)
         if int(resp.content) <= num and int(resp.content) >= 1:
-            if len(self.most_recent["CHANNELS"]) > 0 and chans[num-1].id not in self.most_recent["CHANNELS"]:
+            if len(self.most_recent["CHANNELS"]) > 0 and chans[int(resp.content)-1].id not in self.most_recent["CHANNELS"]:
                 self.most_recent["CHANNELS"].append(chans[num-1])
             else:
                 await self.bot.say("That channel already gets alerts.")
