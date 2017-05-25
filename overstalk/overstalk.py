@@ -95,7 +95,8 @@ class Overstalk:
             soup_obj = BeautifulSoup(await response.text(), "html.parser")
             titlecode = soup_obj.find_all(class_="os-post-header col-md-8")[0]
             title = soup_obj.find_all(class_="os-post-header col-md-8")[0].get_text()
-            link = soup_obj.find(class_="os-post-header col-md-8").a.get('href')
+            link = soup_obj.find(class_="os-post-header col-md-8").a
+            link = link.get('href')
             stamps = soup_obj.find_all(class_="os-post-meta col-md-4 text-right")[0].get_text()
             await asyncio.sleep(0.5)
             if title == self.most_recent["TITLE"] and link == self.most_recent["LINK"]:
@@ -114,8 +115,7 @@ class Overstalk:
                     if channel_obj and can_speak:
                         try:
                             post = discord.Embed()
-                            post.add_field(name="New Post From overstalk.io:", value=title)
-                            post.add_field(name="Link:", value=title)
+                            post.add_field(name="New Post From overstalk.io: {}".format(title), value=link)
                             post.set_footer(text=stamps)
                             await self.bot.send_message(channel_obj, embed=post)
                         except:
@@ -145,7 +145,7 @@ def setup(bot):
     check_files()
     n = Overstalk(bot)
     loop = asyncio.get_event_loop()
-    loop.create_task(n.site_checker())
+    loop.run_forever(n.site_checker())
     bot.add_cog(Overstalk(bot))
     
     
