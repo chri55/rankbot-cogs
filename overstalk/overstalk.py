@@ -108,7 +108,6 @@ def setup(bot):
     n = Overstalk(bot)
     loop = asyncio.get_event_loop()
     loop.create_task(n.site_checker())
-    loop.run_forever()
     bot.add_cog(Overstalk(bot))
     
     
