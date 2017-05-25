@@ -145,7 +145,7 @@ def setup(bot):
     check_files()
     n = Overstalk(bot)
     loop = asyncio.get_event_loop()
-    loop.run_forever(n.site_checker())
-    bot.add_cog(Overstalk(bot))
+    loop.create_task(n.site_checker())
+    bot.add_cog(n)
     
     
