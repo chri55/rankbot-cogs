@@ -35,14 +35,14 @@ class Overstalk:
         await self.bot.say(help_str)
         resp = await self.bot.wait_for_message(timeout = 15, author = ctx.message.author)
         if int(resp.content) <= num and int(resp.content) >= 1:
-            try:
-                if chans[int(resp.content)-1].id not in self.most_recent["CHANNELS"]:
-                    self.most_recent["CHANNELS"].append(chans[int(resp.content)-1].id)
-                    await self.bot.say("This channel will now get Overstalk.io alerts.")
-                else:
-                    await self.bot.say("The channel already gets alerts.")
-            except:
-                await self.bot.say("The list has not been populated properly. Contact the bot owner for help.")
+            #try:
+            if chans[int(resp.content)-1].id not in self.most_recent["CHANNELS"]:
+                self.most_recent["CHANNELS"].append(chans[int(resp.content)-1].id)
+                await self.bot.say("This channel will now get Overstalk.io alerts.")
+            else:
+                await self.bot.say("The channel already gets alerts.")
+            #except:
+            #    await self.bot.say("The list has not been populated properly. Contact the bot owner for help.")
         dataIO.save_json("data/overstalk/recent.json", self.most_recent)
         pass
         
@@ -99,7 +99,7 @@ def check_files():
     f = "data/overstalk/recent.json"
     if not dataIO.is_valid_json(f):
         print("Creating empty recent.json...")
-        dataIO.save_json(f, {"TITLE": "", "LINK" : "", "STAMPS" : "", "CHANNELS" : []}) #Dummy channel
+        dataIO.save_json(f, {"TITLE": "", "LINK" : "", "STAMPS" : "", "CHANNELS" : ["0000000000"]}) #Dummy channel
         
 
 def setup(bot):
