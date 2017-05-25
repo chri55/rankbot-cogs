@@ -20,7 +20,7 @@ class Overstalk:
         self.most_recent = dataIO.load_json("data/overstalk/recent.json")
         
     @commands.command(pass_context=True)
-    @checks.admin_or_perms()
+    @checks.admin_or_permissions()
     async def stalkset(self, ctx):
         ############################################################
         ## TODO: MAKE THIS GRAB ALL CHANNELS AND HAVE THEM SELECT ##
