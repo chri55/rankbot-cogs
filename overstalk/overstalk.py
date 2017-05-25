@@ -20,11 +20,24 @@ class Overstalk:
         self.most_recent = dataIO.load_json("data/overstalk/recent.json")
         
     @commands.command(pass_context=True)
+    @checks.admin_or_perms()
     async def stalkset(self, ctx):
         ############################################################
         ## TODO: MAKE THIS GRAB ALL CHANNELS AND HAVE THEM SELECT ##
         ############################################################
         """Settings to add overstalk.io notifications to a channel"""
+        chans = [chan for chan in ctx.message.server.channels]
+        help_str = "***Choose a channel on the server to send these alerts to by specicfying the number:\n***"
+        num = 1
+        for chan in chans:
+            help_str += num + ": " + chan.name + "\n"
+            num += 1
+        response = self.bot.wait_for_message(timeout = 15, author = ctx.message.author)
+        if response.content <= num and response.content >= 1:
+            if chans[num-1].id not in self.most_recent["CHANNELS"]:
+                self.most_recent["CHANNELS"].append(chans[num-1])
+            else:
+                await self.bot.say("That channel already gets alerts.")
         pass
         
         
@@ -40,7 +53,7 @@ class Overstalk:
             link = soup_obj.find(class_="os-post-header col-md-8").a.get('href')
             stamps = soup_obj.find_all(class_="os-post-meta col-md-4 text-right")[0].get_text()
             await asyncio.sleep(0.5)
-            if title == self.most_recent["TITLE"] and content == self.most_recent["CONTENT"]:
+            if title == self.most_recent["TITLE"] and link == self.most_recent["LINK"]:
                 # I think it's safe to assume the same 
                 # post content AND title would not happen
                 # twice in a row
@@ -57,16 +70,14 @@ class Overstalk:
                         try:
                             post = discord.Embed()
                             post.add_field(name="New Post From overstalk.io:", value=title)
+                            post.add_field(name="Link:", value=title)
+                            post.set_footer(text=stamps)
                             await self.bot.send_message(channel_obj, embed=post)
-                        except:    
-                            await self.bot.say("New post from overstalk.io: {}".format(title))
-                        #if len(title) + len(content) + len(stamps) > 2000:
-                        #    post = discord.Embed()
-                        #    post.add_field(name="New Post From overstalk.io:", value=forum_link)
-                        #    post.set_footer(text="The post was too long to send on Discord.")
-                        #else:    
-                        #    post = embed_format(title, content, stamps)
-                        #    await self.bot.send_message(channel_obj, embed=post)
+                        except:
+                            await self.bot.say("I need to be able to post embeds in this channel.")
+                self.most_recent["TITLE"] = title
+                self.most_recent["LINK"] = link
+                self.most_recent["STAMPS"] = stamps
                 dataIO.save_json("data/overstalk/recent.json", self.most_recent)
                 print("Got new post.  Sleeping...")
             await asyncio.sleep(CHECK_DELAY)
@@ -82,7 +93,7 @@ def check_files():
     f = "data/overstalk/recent.json"
     if not dataIO.is_valid_json(f):
         print("Creating empty recent.json...")
-        dataIO.save_json(f, {"TITLE": "", "LINK" : "", "STAMPS" : ""})
+        dataIO.save_json(f, {"TITLE": "", "LINK" : "", "STAMPS" : "", "CHANNELS" : ""})
         
 
 def setup(bot):
