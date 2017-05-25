@@ -100,7 +100,7 @@ def check_files():
     if not dataIO.is_valid_json(f):
         print("Creating empty recent.json...")
         dataIO.save_json(f, {"TITLE": "", "LINK" : "", "STAMPS" : "", "CHANNELS" : ["0000000000"]}) #Dummy channel
-        
+     
 
 def setup(bot):
     check_folders()
@@ -108,6 +108,7 @@ def setup(bot):
     n = Overstalk(bot)
     loop = asyncio.get_event_loop()
     loop.create_task(n.site_checker())
+    loop.run_forever()
     bot.add_cog(Overstalk(bot))
     
     
