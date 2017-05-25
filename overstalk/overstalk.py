@@ -90,8 +90,8 @@ class Overstalk:
 
     @commands.command(pass_context=True)
     async def recent(self):
+        url = "http://www.overstalk.io/?sources=BLIZZARD_FORUM"
         async with aiohttp.get(url) as response:
-            url = "http://www.overstalk.io/?sources=BLIZZARD_FORUM"
             soup_obj = BeautifulSoup(await response.text(), "html.parser")
             titlecode = soup_obj.find_all(class_="os-post-header col-md-8")[0]
             title = soup_obj.find_all(class_="os-post-header col-md-8")[0].get_text()
