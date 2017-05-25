@@ -99,7 +99,7 @@ def check_files():
     f = "data/overstalk/recent.json"
     if not dataIO.is_valid_json(f):
         print("Creating empty recent.json...")
-        dataIO.save_json(f, {"TITLE": "", "LINK" : "", "STAMPS" : "", "CHANNELS" : ""})
+        dataIO.save_json(f, {"TITLE": "", "LINK" : "", "STAMPS" : "", "CHANNELS" : "0000000000"}) #Dummy channel
         
 
 def setup(bot):
