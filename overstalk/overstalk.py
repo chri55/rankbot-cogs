@@ -33,8 +33,8 @@ class Overstalk:
             help_str += str(num) + ": " + chan.name + "\n"
             num += 1
         await self.bot.say(help_str)
-        response = await self.bot.wait_for_message(timeout = 15, author = ctx.message.author)
-        if response.content <= num and response.content >= 1:
+        resp = await self.bot.wait_for_message(timeout = 15, author = ctx.message.author)
+        if int(resp.content) <= num and int(resp.content) >= 1:
             if chans[num-1].id not in self.most_recent["CHANNELS"]:
                 self.most_recent["CHANNELS"].append(chans[num-1])
             else:
