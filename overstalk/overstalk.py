@@ -65,7 +65,6 @@ class Overstalk:
                 # twice in a row
                 print("No new posts. Sleeping...")
             else:
-                dataIO.save_json("data/overstalk/recent.json", self.most_recent)
                 await asyncio.sleep(0.5)
                 for channel in self.most_recent["CHANNELS"]:
                     channel_obj = self.bot.get_channel(channel)
@@ -105,7 +104,6 @@ class Overstalk:
                 # twice in a row
                 print("No new posts. Sleeping...")
             else:
-                dataIO.save_json("data/overstalk/recent.json", self.most_recent)
                 await asyncio.sleep(0.5)
                 for channel in self.most_recent["CHANNELS"]:
                     channel_obj = self.bot.get_channel(channel)
