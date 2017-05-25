@@ -87,6 +87,43 @@ class Overstalk:
                 dataIO.save_json("data/overstalk/recent.json", self.most_recent)
                 print("Got new post.  Sleeping...")
             await asyncio.sleep(CHECK_DELAY)
+
+    @commands.command(pass_context=True)
+    async def recent(self):
+        async with aiohttp.get(url) as response:
+            soup_obj = BeautifulSoup(await response.text(), "html.parser")
+            titlecode = soup_obj.find_all(class_="os-post-header col-md-8")[0]
+            title = soup_obj.find_all(class_="os-post-header col-md-8")[0].get_text()
+            link = soup_obj.find(class_="os-post-header col-md-8").a.get('href')
+            stamps = soup_obj.find_all(class_="os-post-meta col-md-4 text-right")[0].get_text()
+            await asyncio.sleep(0.5)
+            if title == self.most_recent["TITLE"] and link == self.most_recent["LINK"]:
+                # I think it's safe to assume the same 
+                # post content AND title would not happen
+                # twice in a row
+                print("No new posts. Sleeping...")
+            else:
+                dataIO.save_json("data/overstalk/recent.json", self.most_recent)
+                await asyncio.sleep(0.5)
+                for channel in self.most_recent["CHANNELS"]:
+                    channel_obj = self.bot.get_channel(channel)
+                    if channel_obj is None:
+                        continue
+                    can_speak = channel_obj.permissions_for(channel_obj.server.me).send_messages
+                    if channel_obj and can_speak:
+                        try:
+                            post = discord.Embed()
+                            post.add_field(name="New Post From overstalk.io:", value=title)
+                            post.add_field(name="Link:", value=title)
+                            post.set_footer(text=stamps)
+                            await self.bot.send_message(channel_obj, embed=post)
+                        except:
+                            await self.bot.say("I need to be able to post embeds in this channel.")
+                self.most_recent["TITLE"] = title
+                self.most_recent["LINK"] = link
+                self.most_recent["STAMPS"] = stamps
+                dataIO.save_json("data/overstalk/recent.json", self.most_recent)
+                print("Got new post.  Sleeping...")
             
             
 def check_folders():
