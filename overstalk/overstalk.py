@@ -34,14 +34,11 @@ class Overstalk:
             num += 1
         await self.bot.say(help_str)
         resp = await self.bot.wait_for_message(timeout = 15, author = ctx.message.author)
-        try:
-            if int(resp.content) <= num and int(resp.content) >= 1:
-                if len(self.most_recent["CHANNELS"]) > 0 and chans[num-1].id not in self.most_recent["CHANNELS"]:
-                    self.most_recent["CHANNELS"].append(chans[num-1])
-                else:
-                    await self.bot.say("That channel already gets alerts.")
-        except:
-            await self.bot.say("Overstalk settings closing")
+        if int(resp.content) <= num and int(resp.content) >= 1:
+            if len(self.most_recent["CHANNELS"]) > 0 and chans[num-1].id not in self.most_recent["CHANNELS"]:
+                self.most_recent["CHANNELS"].append(chans[num-1])
+            else:
+                await self.bot.say("That channel already gets alerts.")
         dataIO.save_json("data/overstalk/recent.json", self.most_recent)
         pass
         
