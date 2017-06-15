@@ -197,14 +197,17 @@ class Rank:
             for r in serverroles:
                 if r.name == "PC":
                     await self.bot.add_roles(author, r)
+                    await self.bot.say(":white_check_mark: {}, you have been assigned to the {} role.".format(author.name, r.name))
         elif plat == "xbox":
             for r in serverroles:
                 if r.name == "XBOX":
                     await self.bot.add_roles(author, r)
+                    await self.bot.say(":white_check_mark: {}, you have been assigned to the {} role.".format(author.name, r.name))
         elif plat == "ps4":
             for r in serverroles:
                 if r.name == "PS4":
                     await self.bot.add_roles(author, r)
+                    await self.bot.say(":white_check_mark: {}, you have been assigned to the {} role.".format(author.name, r.name))
         else:
             await self.bot.say(":fire: Please enter `pc` `ps4` or `xbox`!") 
         pass
