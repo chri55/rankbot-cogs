@@ -200,7 +200,7 @@ class Rank:
         elif plat == "ps4":
             await self.bot.add_roles(author, "PS4")
         else:
-            await send_cmd_help(ctx)
+            await self.bot.say(":fire: Please enter `pc` `ps4` or `xbox`!") 
         pass
     
     @commands.command(pass_context=True)
