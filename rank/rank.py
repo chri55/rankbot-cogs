@@ -170,6 +170,38 @@ class Rank:
         await self.bot.replace_roles(author, *authorroles)
         await self.bot.send_message(message.channel, ':white_check_mark: ' + author.name + ', your game role is now: ' + gamerole.upper())
         pass
+
+    @commands.command(pass_context=True)
+    async def platform(self, ctx, plat):
+        """Use to apply a PS4, XBONE, or PC role to yourself. Can apply more than 1.(ps4, xbox, or pc)"""
+        plat = plat.lower()
+        platforms = ['PS4', 'XBOX', 'PC']
+        message = ctx.message
+        server = message.server
+        if server.id not in self.servers:
+            await self.bot.say("This function is not enabled. Please use `rankset` as an admin to enable it.")
+            return
+        author = message.author
+        serverroles = server.roles
+        authorroles = author.roles
+        serverrolenames = [x.name for x in serverroles]
+        for r in platforms:
+            if r not in serverrolenames:
+                try:
+                    await self.bot.say("{} role not detected, creating it in the server...".format(r))
+                    await self.bot.create_role(server, name=r)
+                except Forbidden:
+                    await self.bot.say("I need to have the 'Manage Roles' permission to automatically add the right roles!")
+                    pass
+        if plat == "pc":
+            await self.bot.add_roles(author, "PC")
+        elif plat == "xbox":
+            await self.bot.add_roles(author, "XBOX")
+        elif plat == "ps4":
+            await self.bot.add_roles(author, "PS4")
+        else:
+            await send_cmd_help(ctx)
+        pass
     
     @commands.command(pass_context=True)
     async def ob(self, ctx, battletag):
