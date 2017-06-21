@@ -254,7 +254,7 @@ class Rank:
         stats.add_field(name='Top Heroes Played:', value=topthree, inline = True)
         wins = soupobject.find_all('span', class_='color-stat-win')
         losses = soupobject.find_all('span', class_='color-stat-loss')
-        total = int(int(wins[0].get_text().replace(",", "")) + int(losses[0].get_text().replace(",", "")))        stats.add_field(name='Wins:', value=wins[0].get_text(), inline=True)
+        total = int(int(wins[0].get_text().replace(",", "")) + int(losses[0].get_text().replace(",", "")))
         stats.add_field(name='Losses:', value=losses[0].get_text() , inline=True)
         stats.add_field(name='Total Games: ', value=str(total), inline = True)
         await self.bot.say(embed=stats)
