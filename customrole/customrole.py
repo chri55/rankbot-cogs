@@ -66,7 +66,7 @@ class Customrole(object):
             for id in self.servers:
                 role = self.servers[id]
                 if not self.bot.get_server(id).unavailable:
-                    for rolename in self.bot.get_server(id):
+                    for rolename in self.bot.get_server(id).roles:
                         if rolename.name == role:
                             await self.bot.edit_role(self.bot.get_server(id), rolename, colour=rolename.colour.value + 10)
             await asyncio.sleep(CHANGE_TIME)
