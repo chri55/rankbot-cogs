@@ -81,7 +81,7 @@ def check_files():
     f = "data/customrole/servers.json"
     if not dataIO.is_valid_json(f):
         print("Creating empty servers.json...")
-        dataIO.save_json(f, [])
+        dataIO.save_json(f, {})
 
 def setup(bot):
     check_folders()
