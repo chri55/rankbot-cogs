@@ -50,11 +50,12 @@ class Customrole(object):
         if rolename is None:
             await self.bot.say(":fire: Add the ***exact*** name of the role to be customized.")
             pass
-        if rolename in roles:
-            self.servers[server.id] = rolename
-            await self.bot.say(":white_check_mark: ***{}*** has been made the custom role of the server.".format(rolename))
-        else:
-            await self.bot.say(":fire: Enter the ***exact*** name of the role to be customized!")
+        for role in roles:
+            if rolename == role.name:
+                self.servers[server.id] = rolename
+                await self.bot.say(":white_check_mark: ***{}*** has been made the custom role of the server.".format(rolename))
+            else:
+                await self.bot.say(":fire: Enter the ***exact*** name of the role to be customized!")
         dataIO.save_json("data/customrole/servers.json", self.servers)
         pass
 
