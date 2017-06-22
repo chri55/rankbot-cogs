@@ -26,7 +26,6 @@ class Customrole(object):
             await self.bot.say("If you wish to enable this, type `agree`.")
             response = await self.bot.wait_for_message(timeout=TIMEOUT, author=ctx.message.author, content="agree")
             if response is not None and response.content == "agree":
-                self.servers.append(server.id)
                 self.servers[server.id] = ""
                 await self.bot.say("CustomRole has been enabled.")
             else:
