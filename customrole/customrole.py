@@ -54,15 +54,15 @@ class Customrole(object):
             if rolename == role.name:
                 self.servers[server.id] = rolename
                 await self.bot.say(":white_check_mark: ***{}*** has been made the custom role of the server.".format(rolename))
-            else:
-                await self.bot.say(":fire: Enter the ***exact*** name of the role to be customized!")
-        dataIO.save_json("data/customrole/servers.json", self.servers)
+                dataIO.save_json("data/customrole/servers.json", self.servers)
+                pass
+        await self.bot.say(":fire: Add the ***exact*** name of the role to be customized.")
         pass
 
     async def color_changer(self):
         CHANGE_TIME = 5
 
-        while self == self.get_cog("Customrole"):
+        while self == self.bot.get_cog("Customrole"):
             for id in self.servers:
                 role = self.servers[id]
                 if not self.bot.get_server(id).unavailable:
