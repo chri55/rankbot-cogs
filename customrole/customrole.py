@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 import requests
 import aiohttp
 import os
+import asyncio
 
 class Customrole(object):
     """Allows an admin or bot owner ;) to enable color changing roles!"""
