@@ -83,8 +83,6 @@ def check_files():
         dataIO.save_json(f, [])
 
 def setup(bot):
-    logger = logging.getLogger('aiohttp.client')
-    logger.setLevel(50)  # Stops warning spam
     check_folders()
     check_files()
     n = Customrole(bot)
