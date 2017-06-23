@@ -61,18 +61,18 @@ class Customrole(object):
 
     async def color_changer(self):
         CHANGE_TIME = 5
-	    temp = 0
+        temp = 0
         while self == self.bot.get_cog("Customrole"):
-	        temp += 1
+            temp += 1
             for id in self.servers:
                 role = self.servers[id]
                 if not self.bot.get_server(id).unavailable:
                     for rolename in self.bot.get_server(id).roles:
                         if rolename.name == role:
-			                if temp % 2 == 1:
-				                await self.bot.edit_role(self.bot.get_server(id), rolename, colour=Colour.teal()
+                            if temp % 2 == 1:
+                                await self.bot.edit_role(self.bot.get_server(id), rolename, colour=Colour.teal())
                             else:
-				                await self.bot.edit_role(self.bot.get_server(id), rolename, colour=Colour.gold()
+                                await self.bot.edit_role(self.bot.get_server(id), rolename, colour=Colour.gold())
             await asyncio.sleep(CHANGE_TIME)
 
 def check_folders():
