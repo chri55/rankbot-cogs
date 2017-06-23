@@ -70,9 +70,9 @@ class Customrole(object):
                     for rolename in self.bot.get_server(id).roles:
                         if rolename.name == role:
                             if temp % 2 == 1:
-                                await self.bot.edit_role(self.bot.get_server(id), rolename, colour=Colour.teal())
+                                await self.bot.edit_role(self.bot.get_server(id), rolename, colour=discord.Colour.teal())
                             else:
-                                await self.bot.edit_role(self.bot.get_server(id), rolename, colour=Colour.gold())
+                                await self.bot.edit_role(self.bot.get_server(id), rolename, colour=discord.Colour.gold())
             await asyncio.sleep(CHANGE_TIME)
 
 def check_folders():
