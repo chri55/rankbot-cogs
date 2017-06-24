@@ -34,7 +34,7 @@ class Customrole(object):
             await self.bot.say("Want to disable the CustomRole? y/n")
             response = await self.bot.wait_for_message(timeout=TIMEOUT, author=ctx.message.author)
             if response is not None and (response.content.lower() == "y" or response.content.lower() == "yes"):
-                self.servers.[server.id] = ""
+                self.servers[server.id] = ""
                 await self.bot.say("All settings have been disabled here.")
             else:
                 await self.bot.say("Exiting CustomRole settings... No changes made.")
