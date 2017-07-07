@@ -91,7 +91,7 @@ class Scrimmage:
 
         to_save = "Team {} vs. Team {} - {}:{} {}".format(teamcap1, teamcap2, timeHR, timeMIN, timezone)
         self.schedule["{}|{}".format(tc1ID, tc2ID)] = to_save
-        self.save_json("data/scrimmage/schedule.json", self.schedule)
+        dataIO.save_json("data/scrimmage/schedule.json", self.schedule)
 
         await self.bot.say("The scrimmage has been saved as ```{}```".format(to_save))
 
