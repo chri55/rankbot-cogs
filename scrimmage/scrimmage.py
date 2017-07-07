@@ -29,14 +29,15 @@ class Scrimmage:
             except Forbidden:
                 await self.bot.say("I need 'Manage Server' permissions to automatically create roles.")
                 return
-        if find_in_server(server, "Playing") is not None:
-            role = find_in_server(server, "Playing")
-            if role not in author.roles:
-                await self.add_roles(author, role)
-                await self.bot.say("You are now set to ***play today, {}".format(author.name))
-            else:
-                await self.remove_roles(author, role)
-                await self.bot.say("You are ***no longer set to play, {}".format(author.name))
+        for r in server.roles:
+            if r.name == "Playing":
+                role = r
+        if role not in author.roles:
+            await self.add_roles(author, role)
+            await self.bot.say("You are now set to ***play today, {}***".format(author.name))
+        else:
+            await self.remove_roles(author, role)
+            await self.bot.say("You are ***no longer set to play, {}***".format(author.name))
         pass
 
     @commands.command(pass_context=True, no_pm=True)
@@ -76,13 +77,6 @@ class Scrimmage:
             await self.bot.say("Scrimmage options have been turned ***`on`*** in this server.")
         dataIO.save_json("data/scrimmage/servers.json", self.servers)
         pass
-
-def find_in_server(server, rolename):
-    for r in server.roles:
-        if rolename == r.name:
-            return r
-        else:
-            return None
 
 def check_folders():
     if not os.path.exists("data/scrimmage"):
