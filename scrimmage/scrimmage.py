@@ -108,6 +108,7 @@ class Scrimmage:
 
         output = "```Ruby\nScrims for {}:\n".format(author.name)
         for scrim in self.schedule:
+            print(scrim)
             if author.id in scrim:
                 output += "{} vs. {} - {} {}\n".format(scrim["cap1"], scrim["cap2"], scrim["time"], scrim["timezone"])
         output += "```"
