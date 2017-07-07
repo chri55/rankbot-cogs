@@ -10,7 +10,7 @@ class Scrimmage:
     def __init__(self, bot):
         self.bot = bot
         self.servers = dataIO.load_json("data/scrimmage/servers.json")
-        
+
     @commands.command(pass_context=True, no_pm=True)
     async def playing(self, ctx):
         """Allows users to add and remove their 'Playing' role.
@@ -20,7 +20,7 @@ class Scrimmage:
         if server.id not in self.servers:
             await self.bot.say("Setting the Playing role is not available in this server yet.")
             return
-        
+
         serverrolenames = [x.name for x in ctx.message.server.roles]
         if "Playing" not in serverrolenames:
             try:
@@ -29,17 +29,18 @@ class Scrimmage:
             except Forbidden:
                 await self.bot.say("I need 'Manage Server' permissions to automatically create roles.")
                 return
-        
+
         for r in author.roles:
             if r.name == "Playing":
                 await self.bot.remove_roles(author, r)
                 await self.bot.say("You are no longer playing today, **{}**.".format(author.name))
-                pass
+                break
             else:
                 await self.bot.add_roles(author, r)
                 await self.bot.say("You are now set to play today, **{}**.".format(author.name))
-                pass
-    
+                break
+            pass
+
     @commands.command(pass_context=True, no_pm=True)
     @checks.mod_or_permissions(manage_roles=True)
     async def removeall(self, ctx):
@@ -63,7 +64,7 @@ class Scrimmage:
                         await self.bot.say("I need 'Manage Server' permissions to do this.")
                         return
         pass
-        
+
     @commands.command(pass_context=True, no_pm=True)
     @checks.mod_or_permissions(manage_server=True)
     async def scrimset(self, ctx):
@@ -77,7 +78,7 @@ class Scrimmage:
             await self.bot.say("Scrimmage options have been turned on in this server.")
         dataIO.save_json("data/scrimmage/servers.json", self.servers)
         pass
-    
+
 def check_folders():
     if not os.path.exists("data/scrimmage"):
         print("Making data/scrimmage...")
