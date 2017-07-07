@@ -75,7 +75,7 @@ class Scrimmage:
 
         timeHR = time.split(":")[0]
         timeMIN = time.split(":")[1]
-        
+
         if tc1ID != author.id:
             await self.bot.say("Have the team captain mention themself first: `{}scrimmage @author/TeamCaptain @otherTeamCaptain time timezone`".format(ctx.prefix))
             pass
@@ -88,6 +88,7 @@ class Scrimmage:
             pass
 
         to_save = "Team {} vs. Team {} - {} {}".format(teamcap1, teamcap2, time, timezone)
+        self.schedule["{}|{}".format(tc1ID, tc2ID)] = {}
         self.schedule["{}|{}".format(tc1ID, tc2ID)]["cap1"] = teamcap1.name
         self.schedule["{}|{}".format(tc1ID, tc2ID)]["cap2"] = teamcap2.name
         self.schedule["{}|{}".format(tc1ID, tc2ID)]["time"] = time
