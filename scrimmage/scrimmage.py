@@ -110,7 +110,7 @@ class Scrimmage:
         for scrim in self.schedule:
             print(scrim)
             if author.id in scrim:
-                output += "{} vs. {} - {} {}\n".format(scrim["cap1"], scrim["cap2"], scrim["time"], scrim["timezone"])
+                output += "{} vs. {} - {} {}\n".format(self.schedule[scrim]["cap1"], self.schedule[scrim]["cap2"], self.schedule[scrim]["time"], self.schedule[scrim]["timezone"])
         output += "```"
         await self.bot.say(output)
         pass
