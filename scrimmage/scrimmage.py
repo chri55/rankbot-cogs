@@ -25,7 +25,7 @@ class Scrimmage:
         if "Playing" not in serverrolenames:
             try:
                 await self.bot.say("Creating the Playing role...")
-                await self.bot.create_role(server, name="Playing")
+                await self.bot.create_role(server, name="Playing", mentionable=True)
             except Forbidden:
                 await self.bot.say("I need 'Manage Server' permissions to automatically create roles.")
                 return
@@ -56,7 +56,7 @@ class Scrimmage:
                 if role.name == "Playing":
                     try:
                         await self.bot.delete_role(server, role)
-                        await self.bot.create_role(server, name="Playing")
+                        await self.bot.create_role(server, name="Playing", mentionable=True)
                         await self.bot.say("All have been removed from the Playing role")
                         return
                     except Forbidden:
