@@ -76,10 +76,25 @@ class Scrimmage:
         timeHR = time.split(":")[0]
         timeMIN = time.split(":")[1]
 
-        await self.bot.say("timeHR: {}  timeMIN: {}")
+        await self.bot.say("timeHR: {}  timeMIN: {}".format(timeHR, timeMIN))
 
         if tc1ID != author.id:
             await self.bot.say("Have the team captain mention themself first: `{}scrimmage @author/TeamCaptain @otherTeamCaptain time timezone`".format(ctx.prefix))
+            pass
+
+        ## TODO GET LIST OF TIMEZONES AND CONVERT. WILL USE EST
+        ## FOR TESTING FOR NOW
+
+        if server.id not in self.servers:
+            await self.bot.say("Settings for the Scrimmage module haven't been enabled in this server yet.")
+            pass
+
+        to_save = "Team {} vs. Team {} - {}:{} {}".format(teamcap1, teamcap2, timeHR, timeMIN, timezone)
+        self.schedule["{}|{}".format(tc1ID, tc2ID)] = to_save
+        self.save_json("data/scrimmage/schedule.json", self.schedule)
+
+        await self.bot.say("The scrimmage has been saved as ```{}```".format(to_save))
+
 
         pass
 
