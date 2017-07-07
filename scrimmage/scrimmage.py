@@ -29,17 +29,15 @@ class Scrimmage:
             except Forbidden:
                 await self.bot.say("I need 'Manage Server' permissions to automatically create roles.")
                 return
-
-        for r in author.roles:
-            if r.name == "Playing":
-                await self.bot.remove_roles(author, r)
-                await self.bot.say("You are no longer playing today, **{}**.".format(author.name))
-                break
+        if find_in_server(server, "Playing") is not None:
+            role = find_in_server(server, "Playing")
+            if role not in author.roles:
+                await self.add_roles(author, role)
+                await self.bot.say("You are now set to ***play today, {}".format(author.name))
             else:
-                await self.bot.add_roles(author, r)
-                await self.bot.say("You are now set to play today, **{}**.".format(author.name))
-                break
-            pass
+                await self.remove_roles(author, role)
+                await self.bot.say("You are ***no longer set to play, {}".format(author.name))
+        pass
 
     @commands.command(pass_context=True, no_pm=True)
     @checks.mod_or_permissions(manage_roles=True)
@@ -72,12 +70,19 @@ class Scrimmage:
         server = ctx.message.server
         if server.id in self.servers:
             self.servers.remove(server.id)
-            await self.bot.say("Scrimmage options have been turned off in this server.")
+            await self.bot.say("Scrimmage options have been turned ***`off`*** in this server.")
         else:
             self.servers.append(server.id)
-            await self.bot.say("Scrimmage options have been turned on in this server.")
+            await self.bot.say("Scrimmage options have been turned ***`on`*** in this server.")
         dataIO.save_json("data/scrimmage/servers.json", self.servers)
         pass
+
+def find_in_server(server, rolename):
+    for r in server.roles:
+        if rolename == r.name:
+            return r
+        else:
+            return None
 
 def check_folders():
     if not os.path.exists("data/scrimmage"):
