@@ -10,9 +10,10 @@ class Scrimmage:
     def __init__(self, bot):
         self.bot = bot
         self.servers = dataIO.load_json("data/scrimmage/servers.json")
+        self.schedule = dataIO.load_json("data/scrimmage/schedule.json")
 
     @commands.command(pass_context=True, no_pm=True)
-    async def playing(self, ctx):
+    async def checkin(self, ctx):
         """Allows users to add and remove their 'Playing' role.
         Toggles on and off."""
         author = ctx.message.author
@@ -65,6 +66,24 @@ class Scrimmage:
         pass
 
     @commands.command(pass_context=True, no_pm=True)
+    async def scrimmage(self, ctx, teamcap1 : discord.Member, teamcap2 : discord.Member, time, timezone):
+        """Allows for team captains to set a time for a scheduled scrimmage and be reminded"""
+        author = ctx.message.author
+        server = ctx.message.server
+        tc1ID = teamcap1.id
+        tc2ID = teamcap2.id
+
+        timeHR = time.split(":")[0]
+        timeMIN = time.split(":")[1]
+
+        await self.bot.say("timeHR: {}  timeMIN: {}")
+
+        if tc1ID != author.id:
+            await self.bot.say("Have the team captain mention themself first: `{}scrimmage @author/TeamCaptain @otherTeamCaptain time timezone`".format(ctx.prefix))
+
+        pass
+
+    @commands.command(pass_context=True, no_pm=True)
     @checks.mod_or_permissions(manage_server=True)
     async def scrimset(self, ctx):
         """Turn scrim settings on or off for this server."""
@@ -87,6 +106,9 @@ def check_files():
     f = "data/scrimmage/servers.json"
     if not dataIO.is_valid_json(f):
         dataIO.save_json(f, [])
+    f = "data/scrimmage/schedule.json"
+    if not dataIO.is_valid_json(f):
+        dataIO.save_json(f, {})
 
 def setup(bot):
     check_folders()
