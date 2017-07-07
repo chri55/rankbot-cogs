@@ -73,9 +73,6 @@ class Scrimmage:
         tc1ID = teamcap1.id
         tc2ID = teamcap2.id
 
-        timeHR = time.split(":")[0]
-        timeMIN = time.split(":")[1]
-
         await self.bot.say("timeHR: {}  timeMIN: {}".format(timeHR, timeMIN))
 
         if tc1ID != author.id:
@@ -90,12 +87,29 @@ class Scrimmage:
             pass
 
         to_save = "Team {} vs. Team {} - {}:{} {}".format(teamcap1, teamcap2, timeHR, timeMIN, timezone)
-        self.schedule["{}|{}".format(tc1ID, tc2ID)] = to_save
+        self.schedule["{}|{}".format(tc1ID, tc2ID)]["cap1"] = teamcap1.name
+        self.schedule["{}|{}".format(tc1ID, tc2ID)]["cap2"] = teamcap2.name
+        self.schedule["{}|{}".format(tc1ID, tc2ID)]["time"] = time
+        self.schedule["{}|{}".format(tc1ID, tc2ID)]["zone"] = timezone
         dataIO.save_json("data/scrimmage/schedule.json", self.schedule)
 
         await self.bot.say("The scrimmage has been saved as ```{}```".format(to_save))
 
 
+        pass
+
+    @commands.command(pass_context=True, no_pm=True)
+    async def loadscrims(self, ctx):
+        """Loads all scrims that the player has assigned"""
+        author = ctx.message.author
+        server = ctx.message.server
+
+        output = "```Ruby\nScrims for {}:\n".format(author.name)
+        for scrim in self.schedule:
+            if author.id in scrim:
+                output += "{} vs. {} - {} {}\n".format(scrim["cap1"], scrim["cap2"], scrim["time"], scrim["timezone"])
+        output += "```"
+        await self.bot.say(output)
         pass
 
     @commands.command(pass_context=True, no_pm=True)
