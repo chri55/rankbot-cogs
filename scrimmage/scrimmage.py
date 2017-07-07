@@ -33,10 +33,10 @@ class Scrimmage:
             if r.name == "Playing":
                 role = r
         if role not in author.roles:
-            await self.add_roles(author, role)
+            await self.bot.add_roles(author, role)
             await self.bot.say("You are now set to ***play today, {}***".format(author.name))
         else:
-            await self.remove_roles(author, role)
+            await self.bot.remove_roles(author, role)
             await self.bot.say("You are ***no longer set to play, {}***".format(author.name))
         pass
 
