@@ -64,7 +64,7 @@ class Overtube:
                             developerKey=self.DEVELOPER_KEY)
 
             ytchannel = youtube.channels().list(part='snippet,contentDetails', id="UClOf1XXinvZsy4wKPAkro2A").execute()
-            uploadPL = ytchannel['items'][1]['relatedPlaylists']['uploads']
+            uploadPL = ytchannel['items'][0]['contentDetails']['relatedPlaylists']['uploads']
             if uploadPL.pageInfo.totalResults != self.uploads:
                 print("New video from PlayOverwatch")
 
