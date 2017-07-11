@@ -62,7 +62,7 @@ class Overtube:
             uploadPL = ytchannel['items'][0]['contentDetails']['relatedPlaylists']['uploads']
             results = youtube.playlistItems().list(
                 part='snippet,contentDetails',
-                id=uploadPL
+                playlistId=uploadPL
             ).execute()
             url = "https://youtube.com/watch?v="
             print(results['pageInfo'])
