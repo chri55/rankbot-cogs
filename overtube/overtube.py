@@ -65,7 +65,7 @@ class Overtube:
                 id=uploadPL
             ).execute()
             url = "https://youtube.com/watch?v="
-            print(results['pageInfo']['totalResults'])
+            print(uploadPL)
             if results['pageInfo']['totalResults'] != self.uploads:
                 for vid in results['items']:
                     if vid['snippet']['position'] == 0:
