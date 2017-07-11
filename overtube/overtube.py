@@ -35,7 +35,7 @@ class Overtube:
         server = ctx.message.server
         author = ctx.message.author
 
-        chans = [chan.type.text for chan in server.channels]
+        chans = [chan for chan in server.channels]
         help_str = "***Choose the channel to post updates to by selecting the number:***\n"
         num = 1
         for chan in chans:
