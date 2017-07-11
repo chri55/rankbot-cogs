@@ -87,7 +87,7 @@ class Scrimmage:
             await self.bot.say("Settings for the Scrimmage module haven't been enabled in this server yet.")
             pass
 
-        to_save = "Team {} vs. Team {} - {} {}".format(teamcap1, teamcap2, time, timezone)
+        to_save = "{}'s team vs. {}'s team - {} {}".format(teamcap1, teamcap2, time, timezone)
         self.schedule["{}|{}".format(tc1ID, tc2ID)] = {}
         self.schedule["{}|{}".format(tc1ID, tc2ID)]["cap1"] = teamcap1.name
         self.schedule["{}|{}".format(tc1ID, tc2ID)]["cap2"] = teamcap2.name
@@ -106,11 +106,11 @@ class Scrimmage:
         author = ctx.message.author
         server = ctx.message.server
 
-        output = "```Ruby\nScrims for {}:\n".format(author.name)
+        output = "```\nScrims for {}:\n".format(author.name)
         for scrim in self.schedule:
             print(scrim)
             if author.id in scrim:
-                output += "{} vs. {} - {} {}\n".format(self.schedule[scrim]["cap1"], self.schedule[scrim]["cap2"], self.schedule[scrim]["time"], self.schedule[scrim]["zone"])
+                output += "{}'s team vs. {}'s team - {} {}\n".format(self.schedule[scrim]["cap1"], self.schedule[scrim]["cap2"], self.schedule[scrim]["time"], self.schedule[scrim]["zone"])
         output += "```"
         await self.bot.say(output)
         pass
