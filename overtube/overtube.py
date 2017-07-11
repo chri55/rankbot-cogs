@@ -68,7 +68,7 @@ class Overtube:
             results = youtube.playlistItems().list(
                 part='snippet,contentDetails',
                 id=uploadPL
-            )
+            ).execute()
             url = "https://youtube.com/watch?v="
             if results['pageInfo']['totalResults'] != self.uploads:
                 for vid in results['items']:
@@ -76,6 +76,7 @@ class Overtube:
                         vid_title = vid['snippet']['title']
                         vid_description = vid['snippet']['description']
                         vid_id = url + vid['snippet']['resourceId']['videoId']
+                        break
 
                 print("New video from PlayOverwatch")
                 print(vid_title)
