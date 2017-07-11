@@ -48,11 +48,11 @@ class Overtube:
         if self.servers[server.id] == None:
             self.servers[server.id] = {}
         if chans[int(resp.content)-1].id not in self.servers[server.id]["CHANNELS"]:
-                self.servers[server.id]["CHANNELS"].append(chans[int(resp.content)-1].id)
-                await self.bot.say("***{}*** will now get PlayOverwatch alerts.".format(chans[int(resp.content)-1].name))
-            else:
-                self.servers[server.id]["CHANNELS"].remove(chans[int(resp.content)-1].id)
-                await self.bot.say("Alerts have been removed from ***" + chans[int(resp.content)-1].name + "***")
+            self.servers[server.id]["CHANNELS"].append(chans[int(resp.content)-1].id)
+            await self.bot.say("***{}*** will now get PlayOverwatch alerts.".format(chans[int(resp.content)-1].name))
+        else:
+            self.servers[server.id]["CHANNELS"].remove(chans[int(resp.content)-1].id)
+            await self.bot.say("Alerts have been removed from ***" + chans[int(resp.content)-1].name + "***")
         dataIO.save_json("data/overtube/servers.json")
         pass
 
