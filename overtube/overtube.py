@@ -1,7 +1,5 @@
 import os
 import urllib
-import webapp2
-import jinja2
 import discord
 from discord.ext import commands
 from .utils.dataIO import dataIO
@@ -10,7 +8,7 @@ from .utils import checks
 import requests
 import aiohttp
 from apiclient.discovery import build
-from optparse import OptionParser
+#from optparse import OptionParser
 
 class Overtube:
     """Server commands for posting updates from
