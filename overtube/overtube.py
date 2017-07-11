@@ -15,15 +15,11 @@ class Overtube:
     """Server commands for posting updates from
     the PlayOverwatch Youtube account"""
 
-    ##TODO replace key with method
-    DEVELOPER_KEY = "AIzaSyB8TEnPxmiOgF5NDnBiFauoOvTXmdUFAV8"
-    YOUTUBE_API_SERVICE_NAME = "youtube"
-    YOUTUBE_API_VERSION = "v3"
-
     def __init__(self, bot):
         self.bot = bot
         self.servers = dataIO.load_json("data/overtube/servers.json")
-        self.DEVELOPER_KEY = "AIzaSyAiGsZkKXMAm0nYbq4OoU8BWy13EVjRbdw"
+        ##TODO replace key
+        self.DEVELOPER_KEY = "AIzaSyB8TEnPxmiOgF5NDnBiFauoOvTXmdUFAV8"
         self.YOUTUBE_API_SERVICE_NAME = "youtube"
         self.YOUTUBE_API_VERSION = "v3"
         with open("data/overtube/uploads.txt") as f:
