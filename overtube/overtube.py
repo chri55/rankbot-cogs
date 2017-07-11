@@ -1,6 +1,7 @@
 import os
 import urllib
 import discord
+import asyncio
 from discord.ext import commands
 from .utils.dataIO import dataIO
 from .utils.chat_formatting import escape_mass_mentions
