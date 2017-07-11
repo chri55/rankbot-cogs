@@ -23,6 +23,9 @@ class Overtube:
     def __init__(self, bot):
         self.bot = bot
         self.servers = dataIO.load_json("data/overtube/servers.json")
+        self.DEVELOPER_KEY = "AIzaSyAiGsZkKXMAm0nYbq4OoU8BWy13EVjRbdw"
+        self.YOUTUBE_API_SERVICE_NAME = "youtube"
+        self.YOUTUBE_API_VERSION = "v3"
         with open("data/overtube/uploads.txt") as f:
             try:
                 self.uploads = int(f.readlines()[0])
@@ -60,9 +63,9 @@ class Overtube:
         CHECK_DELAY = 60 ##TODO Change to 10 minutes once this works
 
         while self == self.bot.get_cog("Overtube"):
-            youtube = build(YOUTUBE_API_SERVICE_NAME,
-                            YOUTUBE_API_VERSION,
-                            developerKey=DEVELOPER_KEY)
+            youtube = build(self.YOUTUBE_API_SERVICE_NAME,
+                            self.YOUTUBE_API_VERSION,
+                            developerKey=self.DEVELOPER_KEY)
 
             ytchannel = youtube.channels().list(id="UClOf1XXinvZsy4wKPAkro2A").execute()
             uploadPL = ytchannel.contentDetails.relatedPlaylists.uploads
