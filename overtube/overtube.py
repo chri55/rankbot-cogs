@@ -60,14 +60,14 @@ class Overtube:
 
     async def playlist_checker(self):
         """Checks the PlayOverwatch youtube channel for new vids."""
-        CHECK_DELAY = 60 ##TODO Change to 10 minutes once this works
+        CHECK_DELAY = 60 ##TODO Change to news 10 minutes once this works
 
         while self == self.bot.get_cog("Overtube"):
             youtube = build(self.YOUTUBE_API_SERVICE_NAME,
                             self.YOUTUBE_API_VERSION,
                             developerKey=self.DEVELOPER_KEY)
 
-            ytchannel = youtube.channels().list(id="UClOf1XXinvZsy4wKPAkro2A").execute()
+            ytchannel = youtube.channels().list(part='snippet,contentDetails', id="UClOf1XXinvZsy4wKPAkro2A").execute()
             uploadPL = ytchannel.contentDetails.relatedPlaylists.uploads
             if uploadPL.pageInfo.totalResults != self.uploads:
                 print("New video from PlayOverwatch")
