@@ -87,6 +87,7 @@ def check_files():
     f = "data/overtube/uploads.json"
     if not dataIO.is_valid_json(f):
         print("OVERTUBE: Creating empty uploads.json...")
+        dataIO.save_json(f, {})
 
 def setup(bot):
     check_folders()
