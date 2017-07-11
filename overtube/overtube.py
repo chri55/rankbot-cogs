@@ -77,9 +77,8 @@ class Overtube:
                 self.uploads["VID_TITLE"] = vid_title
                 self.uploads["DESC"] = vid_description
                 self.uploads["URL"] = vid_id
-
                 for server in self.servers:
-                    for chan in server:
+                    for chan in self.servers[server]:
                         print(chan)
                         channel_obj = self.bot.get_channel(chan)
                         if channel_obj is not None:
