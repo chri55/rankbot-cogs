@@ -39,12 +39,12 @@ class Overtube:
             num += 1
         await self.bot.say(help_str)
         resp = await self.bot.wait_for_message(timeout = 15, author = ctx.message.author)
-        self.servers[server.id] = {}
-        if chans[int(resp.content)-1].id not in self.servers[server.id]["CHANNELS"]:
-            self.servers[server.id]["CHANNELS"].append(chans[int(resp.content)-1].id)
+        self.servers[server.id] = []
+        if chans[int(resp.content)-1].id not in self.servers[server.id]:
+            self.servers[server.id].append(chans[int(resp.content)-1].id)
             await self.bot.say("***{}*** will now get PlayOverwatch alerts.".format(chans[int(resp.content)-1].name))
         else:
-            self.servers[server.id]["CHANNELS"].remove(chans[int(resp.content)-1].id)
+            self.servers[server.id].remove(chans[int(resp.content)-1].id)
             await self.bot.say("Alerts have been removed from ***" + chans[int(resp.content)-1].name + "***")
         dataIO.save_json("data/overtube/servers.json")
         pass
@@ -65,7 +65,6 @@ class Overtube:
                 playlistId=uploadPL
             ).execute()
             url = "https://youtube.com/watch?v="
-            print(results['pageInfo'])
             if results['pageInfo']['totalResults'] != self.uploads:
                 for vid in results['items']:
                     if vid['snippet']['position'] == 0:
@@ -73,12 +72,6 @@ class Overtube:
                         vid_description = vid['snippet']['description']
                         vid_id = url + vid['snippet']['resourceId']['videoId']
                         break
-
-                print("New video from PlayOverwatch")
-                print(vid_title)
-                print(vid_description)
-                print(vid_id)
-
             await asyncio.sleep(CHECK_DELAY)
 
 def check_folders():
@@ -91,6 +84,9 @@ def check_files():
     if not dataIO.is_valid_json(f):
         print("OVERTUBE: Creating empty servers.json...")
         dataIO.save_json(f, {})
+    f = "data/overtube/uploads.json"
+    if not dataIO.is_valid_json(f):
+        print("OVERTUBE: Creating empty uploads.json...")
 
 def setup(bot):
     check_folders()
