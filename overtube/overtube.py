@@ -80,6 +80,7 @@ class Overtube:
 
                 for server in self.servers:
                     for chan in server:
+                        print(chan)
                         channel_obj = self.bot.get_channel(chan)
                         if channel_obj is not None:
                             await self.bot.send_message(channel_obj, "__***NEW VIDEO FROM PlayOverwatch YouTube:***__\n\n*{}*\n\n{}\n\n{}".format(vid_title, vid_id, vid_description))
