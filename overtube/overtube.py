@@ -80,7 +80,9 @@ class Overtube:
 
                 for server in self.servers:
                     for self.bot.get_channel(chan) in server:
-                        await self.bot.say("__***NEW VIDEO FROM PlayOverwatch YouTube:***__\n\n*{}*\n\n{}\n\n{}".format(vid_title, vid_id, vid_description))
+                        channel_obj = self.bot.get_channel(chan)
+                        if channel_objis not None:
+                            await self.bot.send_message(channel_obj, "__***NEW VIDEO FROM PlayOverwatch YouTube:***__\n\n*{}*\n\n{}\n\n{}".format(vid_title, vid_id, vid_description))
             dataIO.save_json("data/overtube/uploads.json", self.uploads)
             await asyncio.sleep(CHECK_DELAY)
 
