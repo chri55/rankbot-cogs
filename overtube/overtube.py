@@ -54,21 +54,21 @@ class Overtube:
         dataIO.save_json("data/overtube/servers.json")
         pass
 
-        async def playlist_checker(self):
-            """Checks the PlayOverwatch youtube channel for new vids."""
-            CHECK_DELAY = 60 ##TODO Change to 10 minutes once this works
+    async def playlist_checker(self):
+        """Checks the PlayOverwatch youtube channel for new vids."""
+        CHECK_DELAY = 60 ##TODO Change to 10 minutes once this works
 
-            while self == self.bot.get_cog("Overtube"):
-                youtube = build(YOUTUBE_API_SERVICE_NAME,
-                                YOUTUBE_API_VERSION,
-                                developerKey=DEVELOPER_KEY)
+        while self == self.bot.get_cog("Overtube"):
+            youtube = build(YOUTUBE_API_SERVICE_NAME,
+                            YOUTUBE_API_VERSION,
+                            developerKey=DEVELOPER_KEY)
 
-                ytchannel = youtube.channels().list(id="UClOf1XXinvZsy4wKPAkro2A").execute()
-                uploadPL = ytchannel.contentDetails.relatedPlaylists.uploads
-                if uploadPL.pageInfo.totalResults != self.uploads:
-                    print("New video from PlayOverwatch")
+            ytchannel = youtube.channels().list(id="UClOf1XXinvZsy4wKPAkro2A").execute()
+            uploadPL = ytchannel.contentDetails.relatedPlaylists.uploads
+            if uploadPL.pageInfo.totalResults != self.uploads:
+                print("New video from PlayOverwatch")
 
-                await asyncio.sleep(CHECK_DELAY)
+            await asyncio.sleep(CHECK_DELAY)
 
 def check_folders():
     if not os.path.exists("data/overtube"):
@@ -84,3 +84,11 @@ def check_files():
     if not os.path.exists(f):
         print("OVERTUBE: Creating empty uploads.txt...")
         os.mknod("data/overtube/uploads.txt")
+
+def setup(bot):
+    check_folders()
+    check_files()
+    n = Overtube(bot)
+    loop = asyncio.get_event_loop()
+    loop.create_task(n.playlist_checker())
+    bot.add_cog(n)
