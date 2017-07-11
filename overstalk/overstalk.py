@@ -22,9 +22,6 @@ class Overstalk:
     @commands.command(pass_context=True)
     @checks.admin_or_permissions()
     async def stalkset(self, ctx):
-        ############################################################
-        ## TODO: MAKE THIS GRAB ALL CHANNELS AND HAVE THEM SELECT ##
-        ############################################################
         """Settings to add overstalk.io notifications to a channel"""
         chans = [chan for chan in ctx.message.server.channels]
         help_str = "***Choose a channel on the server to send these alerts to by specicfying the number:\n***"
