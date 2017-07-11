@@ -46,7 +46,7 @@ class Overtube:
         else:
             self.servers[server.id].remove(chans[int(resp.content)-1].id)
             await self.bot.say("Alerts have been removed from ***" + chans[int(resp.content)-1].name + "***")
-        dataIO.save_json("data/overtube/servers.json", self.uploads)
+        dataIO.save_json("data/overtube/servers.json", self.servers)
         pass
 
     async def playlist_checker(self):
@@ -66,6 +66,7 @@ class Overtube:
             ).execute()
             url = "https://youtube.com/watch?v="
             if results['pageInfo']['totalResults'] != self.uploads["UPLOADS"]:
+                print("new vid.")
                 self.uploads["UPLOADS"] = results['pageInfo']['totalResults']
                 for vid in results['items']:
                     if vid['snippet']['position'] == 0:
@@ -80,6 +81,7 @@ class Overtube:
                 for server in self.servers:
                     for chan in server:
                         await self.bot.say("__***NEW VIDEO FROM PlayOverwatch YouTube:***__\n\n*{}*\n\n{}\n\n{}".format(vid_title, vid_id, vid_description))
+            dataIO.save_json("data/overtube/uploads.json", self.uploads)
             await asyncio.sleep(CHECK_DELAY)
 
 def check_folders():
