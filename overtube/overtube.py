@@ -39,7 +39,6 @@ class Overtube:
             num += 1
         await self.bot.say(help_str)
         resp = await self.bot.wait_for_message(timeout = 15, author = ctx.message.author)
-        self.servers[server.id] = []
         if chans[int(resp.content)-1].id not in self.servers[server.id]:
             self.servers[server.id].append(chans[int(resp.content)-1].id)
             await self.bot.say("***{}*** will now get PlayOverwatch alerts.".format(chans[int(resp.content)-1].name))
