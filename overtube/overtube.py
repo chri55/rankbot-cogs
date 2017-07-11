@@ -65,8 +65,22 @@ class Overtube:
 
             ytchannel = youtube.channels().list(part='snippet,contentDetails', id="UClOf1XXinvZsy4wKPAkro2A").execute()
             uploadPL = ytchannel['items'][0]['contentDetails']['relatedPlaylists']['uploads']
-            if uploadPL.pageInfo.totalResults != self.uploads:
+            results = youtube.playlistItems().list(
+                part='snippet,contentDetails',
+                id=uploadPL
+            )
+            url = "https://youtube.com/watch?v="
+            if results['pageInfo']['totalResults'] != self.uploads:
+                for vid in results['items']:
+                    if vid['snippet']['position'] == 0:
+                        vid_title = vid['snippet']['title']
+                        vid_description = vid['snippet']['description']
+                        vid_id = url + vid['snippet']['resourceId']['videoId']
+
                 print("New video from PlayOverwatch")
+                print(vid_title)
+                print(vid_description)
+                print(vid_id)
 
             await asyncio.sleep(CHECK_DELAY)
 
