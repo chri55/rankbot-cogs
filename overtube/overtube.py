@@ -18,11 +18,11 @@ class Overtube:
     def __init__(self, bot):
         self.bot = bot
         self.servers = dataIO.load_json("data/overtube/servers.json")
+        self.uploads = dataIO.load_json("data/overtube/uploads.json")
         ##TODO replace key
         self.DEVELOPER_KEY = "AIzaSyB8TEnPxmiOgF5NDnBiFauoOvTXmdUFAV8"
         self.YOUTUBE_API_SERVICE_NAME = "youtube"
         self.YOUTUBE_API_VERSION = "v3"
-        self.uploads = 0
 
     @commands.command(pass_context=True)
     @checks.admin_or_permissions()
