@@ -80,10 +80,6 @@ def check_files():
     if not dataIO.is_valid_json(f):
         print("OVERTUBE: Creating empty servers.json...")
         dataIO.save_json(f, {})
-    f = "data/overtube/uploads.txt"
-    if not os.path.exists(f):
-        print("OVERTUBE: Creating empty uploads.txt...")
-        os.mknod("data/overtube/uploads.txt")
 
 def setup(bot):
     check_folders()
