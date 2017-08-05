@@ -24,8 +24,8 @@ class Overtube:
         self.YOUTUBE_API_SERVICE_NAME = "youtube"
         self.YOUTUBE_API_VERSION = "v3"
 
-    def is_me(m):
-        return m.author == client.user
+    def is_me(self, m):
+        return m.author == self.bot.user
 
     @commands.command(pass_context=True)
     @checks.admin_or_permissions()
