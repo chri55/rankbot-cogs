@@ -24,6 +24,9 @@ class Overtube:
         self.YOUTUBE_API_SERVICE_NAME = "youtube"
         self.YOUTUBE_API_VERSION = "v3"
 
+    def is_me(m):
+        return m.author == client.user
+
     @commands.command(pass_context=True)
     @checks.admin_or_permissions()
     async def tubeset(self, ctx):
@@ -41,6 +44,7 @@ class Overtube:
         resp = await self.bot.wait_for_message(timeout = 15, author = ctx.message.author)
         if server.id not in self.servers:
             self.servers[server.id] = []
+        deleted = await self.bot.purge_from(chan, limit=2, check=is_me)
         if chans[int(resp.content)-1].id not in self.servers[server.id]:
             self.servers[server.id].append(chans[int(resp.content)-1].id)
             await self.bot.say("***{}*** will now get PlayOverwatch alerts.".format(chans[int(resp.content)-1].name))
