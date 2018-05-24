@@ -19,8 +19,7 @@ class Overtube:
         self.bot = bot
         self.servers = dataIO.load_json("data/overtube/servers.json")
         self.uploads = dataIO.load_json("data/overtube/uploads.json")
-        ##TODO replace key
-        self.DEVELOPER_KEY = "AIzaSyB8TEnPxmiOgF5NDnBiFauoOvTXmdUFAV8"
+        self.DEVELOPER_KEY = "token"
         self.YOUTUBE_API_SERVICE_NAME = "youtube"
         self.YOUTUBE_API_VERSION = "v3"
 
